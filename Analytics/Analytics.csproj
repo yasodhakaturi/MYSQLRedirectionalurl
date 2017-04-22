@@ -330,16 +330,10 @@
     </Content>
     <Content Include="App_Data\APIKey.xml" />
     <Content Include="batch trigger.txt" />
-    <Content Include="Content\angular-block-ui.css" />
-    <Content Include="Content\angular-block-ui.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="WebForm1.aspx" />
-    <Content Include="Content\angular-block-ui.css.map" />
     <Content Include="Service1.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
