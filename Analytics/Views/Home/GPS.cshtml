@@ -1,0 +1,80 @@
+﻿@model Analytics.Models.UserInfo
+
+@{
+    ViewBag.Title = "g0.pe";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+   
+
+    @*<script>
+        if ("@Model.checkModel"!="0")
+        {
+    console.log("@Model.UserId"); console.log("@Model.UserName");
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    //ga('create', 'UA-93490642-1', 'auto');
+    //ga('send', 'pageview');
+
+    ga('create', 'UA-93490642-1','auto');
+    //ga('require','displayfeatures');
+    ga('set', 'dimension1',  @Model.UserId);
+    //ga('send', 'pageview');
+
+    // ga('create', 'UA-93490642-1',{'UserName':'@Model.UserName'});
+    //ga('require','displayfeatures');
+    ga('set', 'dimension2', "@Model.UserName");
+    //ga('send', 'pageview');
+
+    //ga('create', 'UA-93490642-1',{'MobileNumber':'@Model.MobileNumber'});
+    //ga('require','displayfeatures');
+    ga('set', 'dimension3', @Model.MobileNumber);
+    //ga('send', 'pageview');
+
+    //ga('create', 'UA-93490642-1',{'CampaignName':'@Model.CampaingName'});
+    //ga('require','displayfeatures');
+    ga('set', 'dimension4', "@Model.CampaingName");
+    ga('send', 'pageview');
+    
+        }
+    </script>*@
+
+
+    <script type="text/javascript">
+    window.onload = function () {
+        function success(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            window.location.href = "/Home/LoginRid?latitude=" + latitude + "&longitude=" + longitude;
+            @*+"&rid_param=" + "@Model.rid_param"*@
+        }
+        function error() {
+            var latitude = "";
+            var longitude = "";
+            window.location.href = "/Home/LoginRid?latitude=0&longitude=0";
+        }
+        navigator.geolocation.getCurrentPosition(success, error);
+    }
+
+
+    </script>
+  
+    <meta name="viewport" content="width=device-width" />
+    @*<title>GPS</title>*@
+</head>
+<body>
+    <div>
+    </div>
+</body>
+</html>
+
