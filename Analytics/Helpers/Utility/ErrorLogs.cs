@@ -8,15 +8,23 @@ namespace Analytics.Helpers.Utility
 {
     public class ErrorLogs
     {
-        public static void LogErrorData(string stackTraceInfo, string message)
+        public static void LogErrorData(string stackTraceInfo, Exception exp)
         {
             try
             {
+                string message="";
+                if (exp.InnerException == null)
+                    message = exp.Message;
+                else
+                    message = exp.InnerException.ToString();
+
+                string utcdatetime = DateTime.UtcNow.Year + "-" + DateTime.UtcNow.Month + "-" + DateTime.UtcNow.Day + " " + DateTime.UtcNow.TimeOfDay;
+                DateTime? utcdt = Convert.ToDateTime(utcdatetime);
                 shortenurlEntities dc = new shortenurlEntities();
                 errorlog objErrorLog = new errorlog();
                 objErrorLog.StackTrace = stackTraceInfo;
                 objErrorLog.ErrorMessage = message;
-                objErrorLog.DateCreated = System.DateTime.Now;
+                objErrorLog.DateCreated = utcdt;
                 dc.errorlogs.Add(objErrorLog);
                 dc.SaveChanges();
                 string err = "";

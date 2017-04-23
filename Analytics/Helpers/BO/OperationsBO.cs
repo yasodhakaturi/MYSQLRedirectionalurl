@@ -48,7 +48,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return null;
             }
         }
@@ -68,7 +68,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //        return false;
         //    }
         //}
@@ -87,7 +87,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //        return 0;
         //    }
         //}
@@ -107,7 +107,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //        return "";
         //    }
 
@@ -146,7 +146,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //        return null;
         //    }
         //}
@@ -172,7 +172,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //        return 0;
         //    }
         //}
@@ -226,7 +226,7 @@ namespace Analytics.Helpers.BO
         //    obj.apiUrl = appobj;
         //    return obj;
         //}
-        public int convertAddresstoNumber(string ipaddress)
+        public long convertAddresstoNumber(string ipaddress)
         {
             string[] ipaddressstr;
             ipaddressstr = ipaddress.Split('.');
@@ -237,8 +237,8 @@ namespace Analytics.Helpers.BO
 
             long ip = (16777216 * o1) + (65536 * o2) + (256 * o3) + o4;
             //string ipstr = ip.ToString();
-            int ipstr = Convert.ToInt32(ip);
-            return ipstr;
+            //int ipstr = Convert.ToInt32(ip);
+            return ip;
             //long longAddress = BitConverter.ToInt64(IPAddress.Parse(ipaddress).GetAddressBytes(), 0);
             //string ipAddress = new IPAddress(BitConverter.GetBytes(intAddress)).ToString();
             //return longAddress.ToString();
@@ -259,7 +259,7 @@ namespace Analytics.Helpers.BO
             try
 
             {
-                string longurl = ""; int ipnum = 0;
+                string longurl = ""; long ipnum = 0;
                 //long decodedvalue = new ConvertionBO().BaseToLong(Shorturl);
                 //int Uniqueid_shorturldata = Convert.ToInt32(decodedvalue);
                 int Fk_UID = 0; string Cookievalue = "";
@@ -366,7 +366,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 HttpContext.Current.Response.Redirect("../404.html");
                 //return null;
             }
@@ -427,7 +427,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //    }
         //}
         //public void InsertUIDriddata(string referencenumber)
@@ -448,7 +448,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //    }
         //}
 
@@ -489,7 +489,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //    }
         //}
 

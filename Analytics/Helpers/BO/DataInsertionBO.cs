@@ -45,7 +45,7 @@ namespace Analytics.Helpers.BO
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
             }
             finally
             {
@@ -75,7 +75,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
 
             }
             finally
@@ -119,7 +119,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
 
             }
             finally
@@ -130,7 +130,7 @@ namespace Analytics.Helpers.BO
         }
 
 
-        public void Insertshorturldata(string ipv4, string ipv6, int ipnum, string browser, string browser_version, string req_url, string useragent, string hostname, string latitude,string longitude, string ismobiledevice, int? fk_uid, int? fk_rid, int? FK_clientid,string CookieValue,string MobileNumber)
+        public void Insertshorturldata(string ipv4, string ipv6, long ipnum, string browser, string browser_version, string req_url, string useragent, string hostname, string latitude,string longitude, string ismobiledevice, int? fk_uid, int? fk_rid, int? FK_clientid,string CookieValue,string MobileNumber)
         {
             MySqlConnection lSQLConn = null;
             MySqlCommand lSQLCmd = new MySqlCommand();
@@ -172,7 +172,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
 
             }
             finally
