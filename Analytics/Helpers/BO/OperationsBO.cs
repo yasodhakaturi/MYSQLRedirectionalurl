@@ -259,10 +259,7 @@ namespace Analytics.Helpers.BO
             try
 
             {
-                errorlog er = new errorlog();
-                er.ErrorMessage = Shorturl;
-                dc.errorlogs.Add(er);
-                dc.SaveChanges();
+               
                 string longurl = ""; long ipnum = 0;
                 //long decodedvalue = new ConvertionBO().BaseToLong(Shorturl);
                 //int Uniqueid_shorturldata = Convert.ToInt32(decodedvalue);
@@ -288,6 +285,11 @@ namespace Analytics.Helpers.BO
                            join r in dc.riddatas on u.FK_RID equals r.PK_Rid
                            where u.UniqueNumber == Shorturl
                            select u).SingleOrDefault();
+                errorlog er = new errorlog();
+                er.ErrorMessage = Shorturl;
+                er.StackTrace = uid_obj.UniqueNumber;
+                dc.errorlogs.Add(er);
+                dc.SaveChanges();
                 //if (new OperationsBO().CheckUniqueid(Shorturl))
                 if (uid_obj != null)
                 {
@@ -353,6 +355,9 @@ namespace Analytics.Helpers.BO
                 else
                 {
                     HttpContext.Current.Response.Redirect("../404.html");
+                    System.Web.UI.Page page = HttpContext.Current.CurrentHandler as System.Web.UI.Page;
+                    string script = string.Format("alert('{0}');", "not from catch");
+                    page.ClientScript.RegisterClientScriptBlock(page.GetType(), "alert", script, true);          
                     //return obj_userinfo;
                 }
                 //WebOperationContext.Current.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Redirect;
@@ -372,6 +377,9 @@ namespace Analytics.Helpers.BO
             {
                 ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 HttpContext.Current.Response.Redirect("../404.html");
+                System.Web.UI.Page page = HttpContext.Current.CurrentHandler as System.Web.UI.Page;
+                string script = string.Format("alert('{0}');", "from catch");
+                page.ClientScript.RegisterClientScriptBlock(page.GetType(), "alert", script, true);     
                 //return null;
             }
         }
