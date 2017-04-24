@@ -259,6 +259,10 @@ namespace Analytics.Helpers.BO
             try
 
             {
+                errorlog er = new errorlog();
+                er.ErrorMessage = Shorturl;
+                dc.errorlogs.Add(er);
+                dc.SaveChanges();
                 string longurl = ""; long ipnum = 0;
                 //long decodedvalue = new ConvertionBO().BaseToLong(Shorturl);
                 //int Uniqueid_shorturldata = Convert.ToInt32(decodedvalue);
