@@ -45,7 +45,7 @@ namespace Analytics.Helpers.BO
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
             }
             finally
             {
@@ -75,7 +75,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
 
             }
             finally
@@ -119,7 +119,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
 
             }
             finally
@@ -172,7 +172,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
 
             }
             finally

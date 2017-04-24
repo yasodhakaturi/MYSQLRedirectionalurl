@@ -48,7 +48,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return null;
             }
         }
@@ -68,7 +68,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return false;
         //    }
         //}
@@ -87,7 +87,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return 0;
         //    }
         //}
@@ -107,7 +107,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return "";
         //    }
 
@@ -146,7 +146,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return null;
         //    }
         //}
@@ -172,7 +172,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return 0;
         //    }
         //}
@@ -285,11 +285,7 @@ namespace Analytics.Helpers.BO
                            join r in dc.riddatas on u.FK_RID equals r.PK_Rid
                            where u.UniqueNumber == Shorturl
                            select u).SingleOrDefault();
-                errorlog er = new errorlog();
-                er.ErrorMessage = Shorturl;
-                er.StackTrace = uid_obj.UniqueNumber;
-                dc.errorlogs.Add(er);
-                dc.SaveChanges();
+               
                 //if (new OperationsBO().CheckUniqueid(Shorturl))
                 if (uid_obj != null)
                 {
@@ -355,9 +351,7 @@ namespace Analytics.Helpers.BO
                 else
                 {
                     HttpContext.Current.Response.Redirect("../404.html");
-                    System.Web.UI.Page page = HttpContext.Current.CurrentHandler as System.Web.UI.Page;
-                    string script = string.Format("alert('{0}');", "not from catch");
-                    page.ClientScript.RegisterClientScriptBlock(page.GetType(), "alert", script, true);          
+                            
                     //return obj_userinfo;
                 }
                 //WebOperationContext.Current.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Redirect;
@@ -375,11 +369,8 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
-                HttpContext.Current.Response.Redirect("../404.html");
-                System.Web.UI.Page page = HttpContext.Current.CurrentHandler as System.Web.UI.Page;
-                string script = string.Format("alert('{0}');", "from catch");
-                page.ClientScript.RegisterClientScriptBlock(page.GetType(), "alert", script, true);     
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                
                 //return null;
             }
         }
@@ -439,7 +430,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //    }
         //}
         //public void InsertUIDriddata(string referencenumber)
@@ -460,7 +451,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //    }
         //}
 
@@ -501,7 +492,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //    }
         //}
 

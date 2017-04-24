@@ -69,7 +69,7 @@ namespace Analytics.Controllers
             //    catch (Exception ex)
             //{
 
-            //    ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+            //    ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
             //    return View();
             //}
         }
@@ -151,7 +151,7 @@ namespace Analytics.Controllers
         //        catch (Exception ex)
         //    {
 
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return new HttpStatusCodeResult(400, ex.Message).ToString();
         //    }
         //}
@@ -222,7 +222,7 @@ namespace Analytics.Controllers
         //catch (Exception ex)
         //{
 
-        //    ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //    ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //    return new HttpStatusCodeResult(400, ex.Message).ToString();
         //}
 
@@ -329,7 +329,7 @@ namespace Analytics.Controllers
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
 
             }
             //List<CountryCityModel> ipdata = (from m in dc.master_location
@@ -395,7 +395,7 @@ namespace Analytics.Controllers
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return View();
                 //return new HttpStatusCodeResult(400, ex.Message).ToString();
             }
@@ -469,7 +469,7 @@ namespace Analytics.Controllers
         //    catch (Exception ex)
         //    {
 
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return new HttpStatusCodeResult(400, ex.Message).ToString();
         //    }
 
