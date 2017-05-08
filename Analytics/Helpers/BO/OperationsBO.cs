@@ -253,7 +253,7 @@ namespace Analytics.Helpers.BO
             }
             return strIpAddress;
         }
-        public void Monitize(string Shorturl, string latitude, string longitude)
+        public void Monitize(string Shorturl, string latitude, string longitude,string path)
         //public UserInfo Monitize(string Shorturl, string latitude, string longitude)
         {
             try
@@ -291,11 +291,34 @@ namespace Analytics.Helpers.BO
                 //if (new OperationsBO().CheckUniqueid(Shorturl))
                 if (uid_obj != null)
                 {
-                    longurl = uid_obj.Longurl;
-                    if (longurl != null && !longurl.ToLower().StartsWith("http:") && !longurl.ToLower().StartsWith("https:"))
-                        HttpContext.Current.Response.Redirect("http://" + longurl);
-                    else
-                        HttpContext.Current.Response.Redirect(longurl);
+                    longurl = uid_obj.LongurlorMessage;
+                    if (uid_obj.Type == "url")
+                    {
+                        if (longurl != null && !longurl.ToLower().StartsWith("http:") && !longurl.ToLower().StartsWith("https:"))
+                            HttpContext.Current.Response.Redirect("http://" + longurl);
+                        else
+                            HttpContext.Current.Response.Redirect(longurl);
+                    }
+                    else if(uid_obj.Type=="message")
+                    {
+
+                        //System.Windows.Forms.HtmlDocument doc = webbrowser.Document.OpenNew(true);
+                        //doc.Write("<HTML><BODY>This is a new HTML document.</BODY></HTML>");
+                        StringWriter stringWriter = new StringWriter();
+                        using (System.Web.UI.HtmlTextWriter writer = new System.Web.UI.HtmlTextWriter(stringWriter))
+                        {
+                            
+                            writer.Write("<body>");
+                            writer.Write(longurl);
+                            writer.Write("</body>");
+                            
+                            string s = stringWriter.GetStringBuilder().ToString();
+                            
+                            System.IO.File.WriteAllText(path,s);
+                            HttpContext.Current.Response.Redirect("../RedirectPage.html");
+
+                        }
+                    }
                     Fk_UID = uid_obj.PK_Uid;
                     //int? FK_RID = (from u in dc.uiddatas
                     //               where u.PK_Uid == Fk_UID

@@ -333,6 +333,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="RedirectPage.html" />
     <Content Include="WebForm1.aspx" />
     <Content Include="Service1.svc" />
     <Content Include="Web.config">

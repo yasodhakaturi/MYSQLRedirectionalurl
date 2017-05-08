@@ -385,10 +385,10 @@ namespace Analytics.Controllers
                 if (rid_param.Contains(@"\"))
                     rid_param = rid_param.Replace(@"\", "");
                 rid_param = rid_param.Trim();
+                string path = Server.MapPath("../RedirectPage.html");
                
-
                 //call monitize service here
-                new OperationsBO().Monitize(rid_param,latitude,longitude);
+                new OperationsBO().Monitize(rid_param,latitude,longitude,path);
                 //UserInfo obj_userinfo = new OperationsBO().Monitize(rid_param, latitude, longitude);
                 return View();
             }
