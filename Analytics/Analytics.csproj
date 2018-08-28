@@ -240,6 +240,9 @@
     <Compile Include="batchuploaddata.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="campaignhookurl.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="city_blocks_ipv4_geolite2.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
@@ -273,6 +276,9 @@
     <Compile Include="Helpers\Utility\ErrorLogs.cs" />
     <Compile Include="Helpers\Utility\Helper.cs" />
     <Compile Include="Helpers\Utility\SqlHelper.cs" />
+    <Compile Include="hitnotify.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="IService1.cs" />
     <Compile Include="locations_data.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
@@ -389,7 +395,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50955</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8080/</IISUrl>
+          <IISUrl>http://localhost:3000/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

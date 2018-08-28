@@ -353,12 +353,14 @@ namespace Analytics.Helpers.BO
                     //check hit table
                     hitnotify objhit = dc.hitnotifies.Where(x => x.FK_RID == FK_RID).Select(y => y).SingleOrDefault();
                     bool hitnotify; int? pk_HookId=0;
+                    pk_HookId = dc.campaignhookurls.Where(x => x.FK_Rid == FK_RID && x.FK_ClientID == FK_clientid).Select(y => y.PK_HookID).SingleOrDefault();
+
                     if (objhit != null)
                     hitnotify = true;
                     else
                     {
                         hitnotify = false;
-                        pk_HookId = dc.campaignhookurls.Where(x => x.FK_Rid == FK_RID && x.FK_ClientID == FK_clientid).Select(y => y.PK_HookID).SingleOrDefault();
+                        //pk_HookId = dc.campaignhookurls.Where(x => x.FK_Rid == FK_RID && x.FK_ClientID == FK_clientid).Select(y => y.PK_HookID).SingleOrDefault();
                     }
 
                     //new DataInsertionBO().Insertshorturldata(ipv4, ipv6, browser, browserversion, City, Region, Country, CountryCode, req_url, useragent, hostname, devicetype, ismobiledevice, Fk_UID, FK_RID, FK_clientid);
