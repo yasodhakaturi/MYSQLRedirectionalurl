@@ -354,7 +354,10 @@ namespace Analytics.Helpers.BO
                     hitnotify objhit = dc.hitnotifies.Where(x => x.FK_Rid == FK_RID).Select(y => y).SingleOrDefault();
                     bool hitnotify; int? pk_HookId=0;
                     campaignhookurl campobj = dc.campaignhookurls.Where(x => x.FK_Rid == FK_RID && x.FK_ClientID == FK_clientid ).Select(y => y).SingleOrDefault();
-                    pk_HookId = campobj.PK_HookID;
+                    if (campobj != null)
+                    {
+                        pk_HookId = campobj.PK_HookID;
+                    }
                     if (objhit != null)
                     hitnotify = true;
                     else
