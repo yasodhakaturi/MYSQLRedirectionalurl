@@ -281,12 +281,12 @@ namespace Analytics.Helpers.BO
                    
                 }
                 //uid_obj = new OperationsBO().CheckUniqueid(Shorturl);
-               
                 uid_obj = (from u in dc.uiddatas
                            .AsNoTracking()
                            .AsEnumerable()
                            join r in dc.riddatas on u.FK_RID equals r.PK_Rid
-                           where u.UniqueNumber.Contains(Shorturl)
+                           //where u.UniqueNumber.Contains(Shorturl.Trim())
+                           where u.UniqueNumber ==Shorturl
                            select u).SingleOrDefault();
                 //if (new OperationsBO().CheckUniqueid(Shorturl))
                 if (uid_obj != null)
@@ -368,10 +368,13 @@ namespace Analytics.Helpers.BO
 
                     //new DataInsertionBO().Insertshorturldata(ipv4, ipv6, browser, browserversion, City, Region, Country, CountryCode, req_url, useragent, hostname, devicetype, ismobiledevice, Fk_UID, FK_RID, FK_clientid);
                     new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum,browser, browserversion, req_url, useragent, hostname, latitude,longitude, ismobiledevice, Fk_UID, FK_RID, FK_clientid,Cookievalue,uid_obj.MobileNumber,hitnotify,pk_HookId);
-                    if (campobj.Status == "Pause")
+                    if (campobj != null)
                     {
-                        campobj.Status = "Active";
-                        dc.SaveChanges();
+                        if (campobj.Status == "Pause")
+                        {
+                            campobj.Status = "Active";
+                            dc.SaveChanges();
+                        }
                     }
                     //obj_userinfo.UserId = uid_obj.FK_ClientID;
                     //obj_userinfo.UserName = dc.Clients.Where(c => c.PK_ClientID == uid_obj.FK_ClientID).Select(x => x.UserName).SingleOrDefault();
