@@ -315,6 +315,7 @@ namespace Analytics.Helpers.BO
                             string s = stringWriter.GetStringBuilder().ToString();
                             
                             System.IO.File.WriteAllText(path,s);
+                           // HttpContext.Current.Response.Redirect("../RedirectPage.aspx");
                             HttpContext.Current.Response.Redirect("../RedirectPage.html");
 
                         }

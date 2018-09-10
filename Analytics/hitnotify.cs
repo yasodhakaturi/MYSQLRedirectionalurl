@@ -15,10 +15,6 @@ namespace Analytics
     public partial class hitnotify
     {
         public int PK_HitNotifi { get; set; }
-        public Nullable<int> LastHitId { get; set; }
-        public Nullable<int> LastAckID { get; set; }
-        public Nullable<System.DateTime> LastSuccHitDate { get; set; }
-        public Nullable<System.DateTime> LastSucAckDate { get; set; }
         public Nullable<int> NotifyCount { get; set; }
         public Nullable<System.DateTime> AckFailureTime { get; set; }
         public Nullable<int> FK_Rid { get; set; }
