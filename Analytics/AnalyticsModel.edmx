@@ -177,6 +177,15 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Property Name="endIpNum" Type="bigint" Nullable="false" />
           <Property Name="locId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="messagelinks">
+          <Key>
+            <PropertyRef Name="PK_LinkID" />
+          </Key>
+          <Property Name="PK_LinkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShortUrlId" Type="int" />
+          <Property Name="LinkTag" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+        </EntityType>
         <EntityType Name="riddata">
           <Key>
             <PropertyRef Name="PK_Rid" />
@@ -415,6 +424,7 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <EntitySet Name="locations_data" EntityType="Self.locations_data" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="loginhistory" EntityType="Self.loginhistory" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="master_location" EntityType="Self.master_location" Schema="shortenurl" store:Type="Tables" />
+          <EntitySet Name="messagelinks" EntityType="Self.messagelinks" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="riddata" EntityType="Self.riddata" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="shorturldata" EntityType="Self.shorturldata" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="shortenurl" store:Type="Tables" />
@@ -806,6 +816,7 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
             <End Role="uiddata" EntitySet="uiddatas" />
             <End Role="shorturldata" EntitySet="shorturldatas" />
           </AssociationSet>
+          <EntitySet Name="messagelinks" EntityType="shortenurlModel.messagelink" />
           </EntityContainer>
         <EntityType Name="campaignhookurl">
           <Key>
@@ -932,6 +943,15 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="messagelink">
+          <Key>
+            <PropertyRef Name="PK_LinkID" />
+          </Key>
+          <Property Name="PK_LinkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShortUrlId" Type="Int32" />
+          <Property Name="LinkTag" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1212,6 +1232,16 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
                 <ScalarProperty Name="Ipv6" ColumnName="Ipv6" />
                 <ScalarProperty Name="Ipv4" ColumnName="Ipv4" />
                 <ScalarProperty Name="PK_Shorturl" ColumnName="PK_Shorturl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="messagelinks">
+            <EntityTypeMapping TypeName="shortenurlModel.messagelink">
+              <MappingFragment StoreEntitySet="messagelinks">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LinkTag" ColumnName="LinkTag" />
+                <ScalarProperty Name="ShortUrlId" ColumnName="ShortUrlId" />
+                <ScalarProperty Name="PK_LinkID" ColumnName="PK_LinkID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

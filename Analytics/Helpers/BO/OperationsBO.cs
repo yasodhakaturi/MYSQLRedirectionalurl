@@ -308,15 +308,15 @@ namespace Analytics.Helpers.BO
                         using (System.Web.UI.HtmlTextWriter writer = new System.Web.UI.HtmlTextWriter(stringWriter))
                         {
                             
-                            writer.Write("<body>");
-                            writer.Write(longurl);
-                            writer.Write("</body>");
+                           // writer.Write("<body>");
+                           // writer.Write(longurl);
+                           // writer.Write("</body>");
                             
-                            string s = stringWriter.GetStringBuilder().ToString();
+                           // string s = stringWriter.GetStringBuilder().ToString();
                             
-                            System.IO.File.WriteAllText(path,s);
-                           // HttpContext.Current.Response.Redirect("../RedirectPage.aspx");
-                            HttpContext.Current.Response.Redirect("../RedirectPage.html");
+                           // System.IO.File.WriteAllText(path,s);
+                            HttpContext.Current.Response.Redirect(@"../RedirectPage.aspx?surl=" + Shorturl);
+                            // HttpContext.Current.Response.Redirect("../RedirectPage.html");
 
                         }
                     }

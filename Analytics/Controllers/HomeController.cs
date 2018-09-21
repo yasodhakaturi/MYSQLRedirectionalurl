@@ -385,7 +385,9 @@ namespace Analytics.Controllers
                 if (rid_param.Contains(@"\"))
                     rid_param = rid_param.Replace(@"\", "");
                 rid_param = rid_param.Trim();
-                string path = Server.MapPath("../RedirectPage.html");
+                //string path = Server.MapPath("../RedirectPage.html");
+                string path = Server.MapPath("../RedirectPage.aspx");
+
                
                 //call monitize service here
                 new OperationsBO().Monitize(rid_param,latitude,longitude,path);

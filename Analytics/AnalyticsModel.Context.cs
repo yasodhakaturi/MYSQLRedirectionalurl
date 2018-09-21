@@ -45,6 +45,7 @@ namespace Analytics
         public virtual DbSet<campaignhookurl> campaignhookurls { get; set; }
         public virtual DbSet<hitnotify> hitnotifies { get; set; }
         public virtual DbSet<shorturldata> shorturldatas { get; set; }
+        public virtual DbSet<messagelink> messagelinks { get; set; }
     
         public virtual int InsertRIDData(string campaignName, string referencenumber, string pwd, Nullable<int> clientid)
         {

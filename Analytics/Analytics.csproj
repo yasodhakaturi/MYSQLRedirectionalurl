@@ -289,6 +289,9 @@
     <Compile Include="master_location.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="messagelink.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CountryCityModel.cs" />
     <Compile Include="Models\DeviceInfo.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -348,6 +351,11 @@
     <Content Include="Content\Site.css" />
     <Content Include="RedirectPage.aspx" />
     <Content Include="RedirectPage.html" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="WebForm1.aspx" />
     <Content Include="Service1.svc" />
     <Content Include="Web.config">
@@ -359,6 +367,8 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
