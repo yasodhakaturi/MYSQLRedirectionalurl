@@ -16,6 +16,18 @@
     <Property Name="Status" Type="varchar" MaxLength="50" />
     <Property Name="CreatedDate" Type="datetime" Precision="6" />
   </EntityType>
+  <EntityType Name="campaignhookurl">
+    <Key>
+      <PropertyRef Name="PK_HookID" />
+    </Key>
+    <Property Name="PK_HookID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CampaignName" Type="longtext" />
+    <Property Name="HookURL" Type="longtext" />
+    <Property Name="Status" Type="varchar" MaxLength="45" />
+    <Property Name="FK_Rid" Type="int" />
+    <Property Name="FK_ClientID" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" Precision="6" />
+  </EntityType>
   <EntityType Name="city_blocks_ipv4_geolite2">
     <Key>
       <PropertyRef Name="PK_City_ID_IPV4" />
@@ -114,6 +126,17 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
     <Property Name="PK_Hash_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="HashID" Type="varchar" MaxLength="450" />
   </EntityType>
+  <EntityType Name="hitnotify">
+    <Key>
+      <PropertyRef Name="PK_HitNotifi" />
+    </Key>
+    <Property Name="PK_HitNotifi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NotifyCount" Type="int" />
+    <Property Name="AckFailureTime" Type="datetime" Precision="6" />
+    <Property Name="FK_Rid" Type="int" />
+    <Property Name="FK_ClientID" Type="int" />
+    <Property Name="FK_HookID" Type="int" />
+  </EntityType>
   <EntityType Name="locations_data">
     <Key>
       <PropertyRef Name="PK_LOC_ID" />
@@ -148,6 +171,15 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
     <Property Name="startIpNum" Type="bigint" Nullable="false" />
     <Property Name="endIpNum" Type="bigint" Nullable="false" />
     <Property Name="locId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="messagelinks">
+    <Key>
+      <PropertyRef Name="PK_LinkID" />
+    </Key>
+    <Property Name="PK_LinkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ShortUrlId" Type="int" />
+    <Property Name="LinkTag" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedDate" Type="datetime" Precision="6" />
   </EntityType>
   <EntityType Name="riddata">
     <Key>
@@ -197,6 +229,62 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
     <Property Name="FK_RID" Type="int" />
     <Property Name="FK_ClientID" Type="int" />
     <Property Name="FK_City_Master_id" Type="int" />
+    <Property Name="ACK" Type="varchar" MaxLength="45" />
+    <Property Name="ACKDATE" Type="datetime" Precision="6" />
+  </EntityType>
+  <EntityType Name="stat_counts">
+    <Key>
+      <PropertyRef Name="PK_Stat" />
+    </Key>
+    <Property Name="PK_Stat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TotalUsers" Type="int" />
+    <Property Name="UniqueUsers" Type="int" />
+    <Property Name="UniqueUsersToday" Type="int" />
+    <Property Name="UsersToday" Type="int" />
+    <Property Name="UniqueUsersYesterday" Type="int" />
+    <Property Name="UsersYesterday" Type="int" />
+    <Property Name="UniqueUsersLast7days" Type="int" />
+    <Property Name="UsersLast7days" Type="int" />
+    <Property Name="TotalVisits" Type="int" />
+    <Property Name="VisitsToday" Type="int" />
+    <Property Name="UniqueVisitsToday" Type="int" />
+    <Property Name="VisitsYesterday" Type="int" />
+    <Property Name="UniqueVisitsYesterday" Type="int" />
+    <Property Name="UniqueVisitsLast7day" Type="int" />
+    <Property Name="VisitsLast7days" Type="int" />
+    <Property Name="TotalCamapigns" Type="int" />
+    <Property Name="CampaignsLast7days" Type="int" />
+    <Property Name="CampaignsMonth" Type="int" />
+    <Property Name="UrlTotal_Today" Type="int" />
+    <Property Name="UrlPercent_Today" Type="double" />
+    <Property Name="VisitsTotal_Today" Type="int" />
+    <Property Name="VisitsPercent_Today" Type="double" />
+    <Property Name="RevisitsTotal_Today" Type="int" />
+    <Property Name="RevisitsPercent_Today" Type="double" />
+    <Property Name="NoVisitsTotal_Today" Type="int" />
+    <Property Name="NoVisitsPercent_Today" Type="double" />
+    <Property Name="UrlTotal_Week" Type="int" />
+    <Property Name="UrlPercent_Week" Type="double" />
+    <Property Name="VisitsTotal_Week" Type="int" />
+    <Property Name="VisitsPercent_Week" Type="double" />
+    <Property Name="RevisitsTotal_Week" Type="int" />
+    <Property Name="RevisitsPercent_Week" Type="double" />
+    <Property Name="NoVisitsTotal_Week" Type="int" />
+    <Property Name="NoVisitsPercent_Week" Type="double" />
+    <Property Name="UrlTotal_Month" Type="int" />
+    <Property Name="UrlTotalPercent_Month" Type="double" />
+    <Property Name="VisitsTotal_Month" Type="int" />
+    <Property Name="VisitsPercent_Month" Type="double" />
+    <Property Name="RevisitsTotal_Month" Type="int" />
+    <Property Name="RevisitsPercent_Month" Type="double" />
+    <Property Name="NoVisitsTotal_Month" Type="int" />
+    <Property Name="NoVisitsPercent_Month" Type="double" />
+    <Property Name="DaysCount_Week" Type="int" />
+    <Property Name="DaysCount_Month" Type="int" />
+    <Property Name="FK_Rid" Type="int" />
+    <Property Name="FK_ClientID" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" Precision="0" />
+    <Property Name="UniqueVisits" Type="int" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
@@ -223,8 +311,9 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
     <Property Name="FK_RID" Type="int" />
     <Property Name="FK_ClientID" Type="int" />
     <Property Name="ReferenceNumber" Type="varchar" MaxLength="450" />
-    <Property Name="Longurl" Type="varchar" MaxLength="450" />
+    <Property Name="LongurlorMessage" Type="longtext" />
     <Property Name="MobileNumber" Type="varchar" MaxLength="50" />
+    <Property Name="Type" Type="varchar" MaxLength="45" />
     <Property Name="CreatedDate" Type="datetime" Precision="6" />
     <Property Name="UpdatedDate" Type="datetime" Precision="6" />
     <Property Name="UniqueNumber" Type="varchar" MaxLength="450" />
@@ -315,6 +404,18 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="hitnotify_ibfk_1">
+    <End Role="campaignhookurl" Type="Self.campaignhookurl" Multiplicity="0..1" />
+    <End Role="hitnotify" Type="Self.hitnotify" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="campaignhookurl">
+        <PropertyRef Name="PK_HookID" />
+      </Principal>
+      <Dependent Role="hitnotify">
+        <PropertyRef Name="FK_HookID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Function Name="InsertRIDData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
     <Parameter Name="CampaignName" Type="longtext" Mode="In" />
     <Parameter Name="referencenumber" Type="varchar" Mode="In" />
@@ -328,7 +429,7 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
     <Parameter Name="browser_version" Type="varchar" Mode="In" />
     <Parameter Name="latitude" Type="longtext" Mode="In" />
     <Parameter Name="longitude" Type="longtext" Mode="In" />
-    <Parameter Name="ipnum" Type="varchar" Mode="In" />
+    <Parameter Name="ipnum" Type="bigint" Mode="In" />
     <Parameter Name="req_url" Type="longtext" Mode="In" />
     <Parameter Name="useragent" Type="longtext" Mode="In" />
     <Parameter Name="hostname" Type="varchar" Mode="In" />
@@ -338,6 +439,8 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
     <Parameter Name="FK_clientid" Type="int" Mode="In" />
     <Parameter Name="cookievalue" Type="varchar" Mode="In" />
     <Parameter Name="mobilenumber" Type="varchar" Mode="In" />
+    <Parameter Name="hitnotify" Type="tinyint" Mode="In" />
+    <Parameter Name="PK_HookId" Type="int" Mode="In" />
   </Function>
   <Function Name="InsertUIDData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
     <Parameter Name="fk_rid" Type="int" Mode="In" />
@@ -347,29 +450,33 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
     <Parameter Name="mobilenumber" Type="varchar" Mode="In" />
   </Function>
   <Function Name="spGetALLCOUNTS1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
-    <Parameter Name="DateFrom" Type="datetime" Mode="In" />
-    <Parameter Name="DateTo" Type="datetime" Mode="In" />
+    <Parameter Name="DateFrom" Type="varchar" Mode="In" />
+    <Parameter Name="DateTo" Type="varchar" Mode="In" />
     <Parameter Name="rid" Type="int" Mode="In" />
   </Function>
   <Function Name="spGetCampaignSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
-    <Parameter Name="rid" Type="longtext" Mode="In" />
+    <Parameter Name="rid" Type="int" Mode="In" />
   </Function>
   <Function Name="spGetDashBoardSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
     <Parameter Name="FkClientId" Type="int" Mode="In" />
   </Function>
   <EntityContainer Name="shortenurlModelStoreContainer">
     <EntitySet Name="batchuploaddata" EntityType="Self.batchuploaddata" Schema="shortenurl" store:Type="Tables" />
+    <EntitySet Name="campaignhookurl" EntityType="Self.campaignhookurl" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="city_blocks_ipv4_geolite2" EntityType="Self.city_blocks_ipv4_geolite2" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="client" EntityType="Self.client" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="cookietable" EntityType="Self.cookietable" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="errorlog" EntityType="Self.errorlog" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="freegeoipdata" EntityType="Self.freegeoipdata" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="hashidlist" EntityType="Self.hashidlist" Schema="shortenurl" store:Type="Tables" />
+    <EntitySet Name="hitnotify" EntityType="Self.hitnotify" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="locations_data" EntityType="Self.locations_data" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="loginhistory" EntityType="Self.loginhistory" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="master_location" EntityType="Self.master_location" Schema="shortenurl" store:Type="Tables" />
+    <EntitySet Name="messagelinks" EntityType="Self.messagelinks" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="riddata" EntityType="Self.riddata" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="shorturldata" EntityType="Self.shorturldata" Schema="shortenurl" store:Type="Tables" />
+    <EntitySet Name="stat_counts" EntityType="Self.stat_counts" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="tmp_rownum_update" EntityType="Self.tmp_rownum_update" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="uiddata" EntityType="Self.uiddata" Schema="shortenurl" store:Type="Tables" />
@@ -418,6 +525,10 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
     <AssociationSet Name="FK_UIDDATA_RIDDATA" Association="Self.FK_UIDDATA_RIDDATA">
       <End Role="riddata" EntitySet="riddata" />
       <End Role="uiddata" EntitySet="uiddata" />
+    </AssociationSet>
+    <AssociationSet Name="hitnotify_ibfk_1" Association="Self.hitnotify_ibfk_1">
+      <End Role="campaignhookurl" EntitySet="campaignhookurl" />
+      <End Role="hitnotify" EntitySet="hitnotify" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

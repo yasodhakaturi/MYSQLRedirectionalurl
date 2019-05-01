@@ -281,12 +281,19 @@ namespace Analytics.Helpers.BO
                    
                 }
                 //uid_obj = new OperationsBO().CheckUniqueid(Shorturl);
+                //uid_obj = (from u in dc.uiddatas
+                //           .AsNoTracking()
+                //           .AsEnumerable()
+                //           join r in dc.riddatas on u.FK_RID equals r.PK_Rid
+                //           //where u.UniqueNumber.Contains(Shorturl.Trim())
+                //           where u.UniqueNumber ==Shorturl
+                //           select u).SingleOrDefault();
                 uid_obj = (from u in dc.uiddatas
-                           .AsNoTracking()
-                           .AsEnumerable()
-                           join r in dc.riddatas on u.FK_RID equals r.PK_Rid
+                          .AsNoTracking()
+                          .AsEnumerable()
+                          // join r in dc.riddatas on u.FK_RID equals r.PK_Rid
                            //where u.UniqueNumber.Contains(Shorturl.Trim())
-                           where u.UniqueNumber ==Shorturl
+                           where u.UniqueNumber == Shorturl
                            select u).SingleOrDefault();
                 //if (new OperationsBO().CheckUniqueid(Shorturl))
                 if (uid_obj != null)

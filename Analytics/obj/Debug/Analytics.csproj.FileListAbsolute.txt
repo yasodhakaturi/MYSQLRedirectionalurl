@@ -596,9 +596,6 @@ C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL docum
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\Redirectionurl_code\Analytics\obj\Debug\Analytics.dll
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\Redirectionurl_code\Analytics\obj\Debug\Analytics.pdb
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\Redirectionurl_code\Analytics\obj\Debug\Analytics.csprojResolveAssemblyReference.cache
-C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\obj\Debug\Analytics.csprojResolveAssemblyReference.cache
-C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\obj\Debug\Analytics.dll
-C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\obj\Debug\Analytics.pdb
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Analytics.dll.config
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Analytics.dll
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Analytics.pdb
@@ -621,6 +618,8 @@ C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL docum
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Microsoft.Owin.Security.OAuth.dll
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Microsoft.Owin.Security.Twitter.dll
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\MySql.Data.dll
+C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\MySql.Data.Entity.EF6.dll
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Newtonsoft.Json.dll
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Ninject.dll
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Owin.dll
@@ -670,5 +669,6 @@ C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL docum
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\MySql.Data.dll
-C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\bin\MySql.Data.Entity.EF6.dll
+C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\obj\Debug\Analytics.csprojResolveAssemblyReference.cache
+C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\obj\Debug\Analytics.dll
+C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLRedirectionalurl\Analytics\obj\Debug\Analytics.pdb
