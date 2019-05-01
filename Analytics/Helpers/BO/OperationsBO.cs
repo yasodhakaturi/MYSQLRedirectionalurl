@@ -289,8 +289,8 @@ namespace Analytics.Helpers.BO
                 //           where u.UniqueNumber ==Shorturl
                 //           select u).SingleOrDefault();
                 uid_obj = (from u in dc.uiddatas
-                          .AsNoTracking()
-                          .AsEnumerable()
+                          //.AsNoTracking()
+                          //.AsEnumerable()
                           // join r in dc.riddatas on u.FK_RID equals r.PK_Rid
                            //where u.UniqueNumber.Contains(Shorturl.Trim())
                            where u.UniqueNumber == Shorturl
