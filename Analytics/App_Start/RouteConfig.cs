@@ -30,7 +30,7 @@ namespace Analytics
             routes.MapRoute(
            name: "Login",
            url: "{id}",
-           defaults: new { controller = "Home", action = "GPS" }
+           defaults: new { controller = "Home", action = "LoginRid" }
        );
 
 

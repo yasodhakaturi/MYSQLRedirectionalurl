@@ -370,8 +370,9 @@ namespace Analytics.Controllers
 
         }
         //public ActionResult LoginRid(string latitude, string longitude, string rid_param)
-        public ActionResult LoginRid(string latitude, string longitude)
-        {
+        //public void LoginRid(string latitude, string longitude)
+    public void LoginRid ()   
+    {
             try
             {
                 string rid_param = ""; int rid_shorturl = 0; int rid_cookie = 0;
@@ -386,19 +387,19 @@ namespace Analytics.Controllers
                     rid_param = rid_param.Replace(@"\", "");
                 rid_param = rid_param.Trim();
                 //string path = Server.MapPath("../RedirectPage.html");
-                string path = Server.MapPath("../RedirectPage.aspx");
+                string path = Server.MapPath("~RedirectPage.aspx" );
 
                
                 //call monitize service here
-                new OperationsBO().Monitize(rid_param,latitude,longitude,path);
+                new OperationsBO().Monitize(rid_param,"","",path);
                 //UserInfo obj_userinfo = new OperationsBO().Monitize(rid_param, latitude, longitude);
-                return View();
+                //return View();
             }
             catch (Exception ex)
             {
 
                 ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                return View();
+                //return View();
                 //return new HttpStatusCodeResult(400, ex.Message).ToString();
             }
         }
