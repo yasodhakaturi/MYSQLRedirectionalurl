@@ -15,6 +15,7 @@ using System.Web;
 using System.Net;
 using System.IO;
 using MySql.Data.MySqlClient;
+using System.Data.Entity.Core.Objects;
 namespace Analytics.Helpers.BO
 {
 
@@ -391,5 +392,35 @@ namespace Analytics.Helpers.BO
             }
         }
 
+        //public uiddata GETShorturldata(string unique_number)
+        //{
+
+        //    uiddata shorturldata = new uiddata();
+        //    connStr = ConfigurationManager.ConnectionStrings["shortenurlEntities"].ConnectionString;
+        //    try
+        //    {
+
+        //        // create and open a connection object
+        //        lSQLConn = new MySqlConnection(connStr);
+        //        MySqlDataReader myReader;
+        //        lSQLConn.Open();
+        //        lSQLCmd.CommandType = CommandType.StoredProcedure;
+        //        lSQLCmd.CommandText = "spGetUIDDATA";
+        //        lSQLCmd.Parameters.Add(new MySqlParameter("@unique_number", unique_number));
+        //        lSQLCmd.Connection = lSQLConn;
+        //        myReader = lSQLCmd.ExecuteReader();
+
+        //         shorturldata = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)dc)
+        //       .ObjectContext
+        //       .Translate<uiddata>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                
+        //    }
+        //    catch
+        //    {
+
+        //    }
+        //    return shorturldata;
+        //}
+    
     }
 }

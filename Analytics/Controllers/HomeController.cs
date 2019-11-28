@@ -387,7 +387,7 @@ namespace Analytics.Controllers
                     rid_param = rid_param.Replace(@"\", "");
                 rid_param = rid_param.Trim();
                 //string path = Server.MapPath("../RedirectPage.html");
-                string path = Server.MapPath("~RedirectPage.aspx" );
+                string path = Server.MapPath("~/RedirectPage.aspx" );
 
                
                 //call monitize service here

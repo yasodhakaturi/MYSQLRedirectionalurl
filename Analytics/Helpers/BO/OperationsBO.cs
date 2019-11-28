@@ -256,15 +256,20 @@ namespace Analytics.Helpers.BO
         public void Monitize(string Shorturl, string latitude, string longitude,string path)
         //public UserInfo Monitize(string Shorturl, string latitude, string longitude)
         {
+            string ipv4=null; string ipv6=null; string browser=null; string browserversion=null; string req_url=null; long ipnum = 0; int? FK_RID=0; int Fk_UID = 0; uiddata uid_obj = new uiddata();
+            int? FK_clientid=0 ;
+
+            string uiderrtrack="noissue";
             try
 
             {
                
-                string longurl = ""; long ipnum = 0;
+                string longurl = ""; 
+               
                 //long decodedvalue = new ConvertionBO().BaseToLong(Shorturl);
                 //int Uniqueid_shorturldata = Convert.ToInt32(decodedvalue);
-                int Fk_UID = 0; string Cookievalue = "";
-                uiddata uid_obj = new uiddata();
+                 string Cookievalue = "";
+                
                 UserInfo obj_userinfo = new UserInfo();
                 if (HttpContext.Current.Request.Cookies["VisitorCookie"] == null)
                 {
@@ -288,13 +293,30 @@ namespace Analytics.Helpers.BO
                 //           //where u.UniqueNumber.Contains(Shorturl.Trim())
                 //           where u.UniqueNumber ==Shorturl
                 //           select u).SingleOrDefault();
-                uid_obj = (from u in dc.uiddatas
-                          //.AsNoTracking()
-                          //.AsEnumerable()
-                          // join r in dc.riddatas on u.FK_RID equals r.PK_Rid
-                           //where u.UniqueNumber.Contains(Shorturl.Trim())
-                           where u.UniqueNumber == Shorturl
-                           select u).SingleOrDefault();
+                using(shortenurlEntities db=new shortenurlEntities() )
+                {
+                    db.Database.CommandTimeout = 3 * 60;
+                    try
+                    {
+                      
+                        uiderrtrack = System.DateTime.Now+" ";
+                        ErrorLogs.LogErrorData(uiderrtrack, "testing");
+                        uid_obj = (from u in db.uiddatas
+                                  //.AsNoTracking()
+                                 .AsEnumerable()
+                                   // join r in dc.riddatas on u.FK_RID equals r.PK_Rid
+                                   //where u.UniqueNumber.Contains(Shorturl.Trim())
+                                   where u.UniqueNumber.ToString()==(Shorturl.ToString())
+                                   select u).SingleOrDefault();
+
+                        ErrorLogs.LogErrorData(System.DateTime.Now+" "+ uid_obj.UniqueNumber, "testing");
+                    }
+                    catch (Exception ex)
+                    {
+                        uiderrtrack = "issue in uiddata query fetching === ";
+                        ErrorLogs.LogErrorData(uiderrtrack + ex.StackTrace + ex.InnerException, ex.Message);
+                    }
+                }
                 //if (new OperationsBO().CheckUniqueid(Shorturl))
                 if (uid_obj != null)
                 {
@@ -336,17 +358,46 @@ namespace Analytics.Helpers.BO
                     //                    select r).SingleOrDefault();
                     //int? FK_clientid = objr.FK_ClientId;
 
-                    int? FK_RID = uid_obj.FK_RID;
-                    int? FK_clientid = uid_obj.FK_ClientID;
+                    FK_RID = uid_obj.FK_RID;
+                     FK_clientid = uid_obj.FK_ClientID;
 
                     //retrive ipaddress and browser
                     //string ipv4 = new ConvertionBO().GetIP4Address();
                     var request = HttpContext.Current.Request;
-                    string ipv4 = IpAddress();
-                    string ipv6 = request.UserHostAddress;
-                    string browser = request.Browser.Browser;
-                    string browserversion = request.Browser.Version;
-                    string req_url = request.UrlReferrer.ToString();
+
+                     ipv4 = IpAddress();  
+                    try
+                    {
+                         ipv6 = request.UserHostAddress;
+                    }
+                    catch (Exception ex)
+                    {
+                         ipv6 = null;
+                    }
+                    try
+                    {
+                         browser = request.Browser.Browser;
+                    }
+                    catch (Exception ex)
+                    {
+                         browser = null;
+                    }
+                    try
+                    {
+                         browserversion = request.Browser.Version;
+                    }
+                    catch (Exception ex)
+                    {
+                         browserversion = null;
+                    }
+                    try
+                    {
+                     req_url = (request.UrlReferrer != null) ? (request.UrlReferrer.ToString()) : (request.Url.AbsoluteUri);
+                    }
+                    catch (Exception ex)
+                    {
+                         req_url = null;
+                    }
                     //string[] header_array = HttpContext.Current.Request.Headers.AllKeys;
                     string useragent = request.UserAgent;
                     string hostname = request.UserHostName;
@@ -359,19 +410,27 @@ namespace Analytics.Helpers.BO
 
 
                     //check hit table
-                    hitnotify objhit = dc.hitnotifies.Where(x => x.FK_Rid == FK_RID).Select(y => y).SingleOrDefault();
-                    bool hitnotify; int? pk_HookId=0;
-                    campaignhookurl campobj = dc.campaignhookurls.Where(x => x.FK_Rid == FK_RID && x.FK_ClientID == FK_clientid ).Select(y => y).SingleOrDefault();
-                    if (campobj != null)
+                    bool hitnotify; int? pk_HookId = 0; campaignhookurl campobj=new campaignhookurl();
+                    try
                     {
-                        pk_HookId = campobj.PK_HookID;
+                        hitnotify objhit = dc.hitnotifies.Where(x => x.FK_Rid == FK_RID).Select(y => y).FirstOrDefault();
+                         campobj = dc.campaignhookurls.Where(x => x.FK_Rid == FK_RID && x.FK_ClientID == FK_clientid).Select(y => y).SingleOrDefault();
+                        if (campobj != null)
+                        {
+                            pk_HookId = campobj.PK_HookID;
+                        }
+                        if (objhit != null)
+                            hitnotify = true;
+                        else
+                        {
+                            hitnotify = false;
+                            //pk_HookId = dc.campaignhookurls.Where(x => x.FK_Rid == FK_RID && x.FK_ClientID == FK_clientid).Select(y => y.PK_HookID).SingleOrDefault();
+                        }
                     }
-                    if (objhit != null)
-                    hitnotify = true;
-                    else
+                    catch(Exception ex)
                     {
+                        pk_HookId = 0;
                         hitnotify = false;
-                        //pk_HookId = dc.campaignhookurls.Where(x => x.FK_Rid == FK_RID && x.FK_ClientID == FK_clientid).Select(y => y.PK_HookID).SingleOrDefault();
                     }
 
                     //new DataInsertionBO().Insertshorturldata(ipv4, ipv6, browser, browserversion, City, Region, Country, CountryCode, req_url, useragent, hostname, devicetype, ismobiledevice, Fk_UID, FK_RID, FK_clientid);
@@ -406,7 +465,7 @@ namespace Analytics.Helpers.BO
                 }
                 else
                 {
-                    HttpContext.Current.Response.Redirect("../404.html");
+                    HttpContext.Current.Response.Redirect("~/404.html");
                             
                     //return obj_userinfo;
                 }
@@ -425,8 +484,10 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                
+                ErrorLogs.LogErrorData(ex.StackTrace+ex.InnerException, ex.Message);
+                if(ipv4!=null)
+                new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum, "", "", req_url, "", "", latitude, longitude, "", Fk_UID, FK_RID, FK_clientid, "", "", false, 0);
+
                 //return null;
             }
         }
