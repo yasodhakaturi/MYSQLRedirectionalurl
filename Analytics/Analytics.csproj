@@ -428,7 +428,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="RedirectPage.aspx" />
     <Content Include="RedirectPage.html" />
-    <Content Include="bin\Analytics.dll.config" />
+    <Content Include="bin\Analytics.dll.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

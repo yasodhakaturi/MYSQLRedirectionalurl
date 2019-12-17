@@ -228,20 +228,28 @@ namespace Analytics.Helpers.BO
         //}
         public long convertAddresstoNumber(string ipaddress)
         {
-            string[] ipaddressstr;
-            ipaddressstr = ipaddress.Split('.');
-            long o1 = Convert.ToInt64(ipaddressstr[0]);
-            long o2 = Convert.ToInt64(ipaddressstr[1]);
-            long o3 = Convert.ToInt64(ipaddressstr[2]);
-            long o4 = Convert.ToInt64(ipaddressstr[3]);
+            long ip = 0;
+            try
+            {
+                string[] ipaddressstr;
+                ipaddressstr = ipaddress.Split('.');
+                long o1 = Convert.ToInt64(ipaddressstr[0]);
+                long o2 = Convert.ToInt64(ipaddressstr[1]);
+                long o3 = Convert.ToInt64(ipaddressstr[2]);
+                long o4 = Convert.ToInt64(ipaddressstr[3]);
 
-            long ip = (16777216 * o1) + (65536 * o2) + (256 * o3) + o4;
-            //string ipstr = ip.ToString();
-            //int ipstr = Convert.ToInt32(ip);
-            return ip;
-            //long longAddress = BitConverter.ToInt64(IPAddress.Parse(ipaddress).GetAddressBytes(), 0);
-            //string ipAddress = new IPAddress(BitConverter.GetBytes(intAddress)).ToString();
-            //return longAddress.ToString();
+                 ip = (16777216 * o1) + (65536 * o2) + (256 * o3) + o4;
+                //string ipstr = ip.ToString();
+                //int ipstr = Convert.ToInt32(ip);
+                return ip;
+                //long longAddress = BitConverter.ToInt64(IPAddress.Parse(ipaddress).GetAddressBytes(), 0);
+                //string ipAddress = new IPAddress(BitConverter.GetBytes(intAddress)).ToString();
+                //return longAddress.ToString();
+            }
+            catch(Exception ex)
+            {
+                return ip;
+            }
         }
         public string IpAddress()
         {
@@ -256,10 +264,13 @@ namespace Analytics.Helpers.BO
         public void Monitize(string Shorturl, string latitude, string longitude,string path)
         //public UserInfo Monitize(string Shorturl, string latitude, string longitude)
         {
-            string ipv4=null; string ipv6=null; string browser=null; string browserversion=null; string req_url=null; long ipnum = 0; int? FK_RID=0; int Fk_UID = 0; uiddata uid_obj = new uiddata();
-            int? FK_clientid=0 ;
+            string ipv4=null; string ipv6=null; string browser=null; string browserversion=null; string req_url=null; long ipnum = 0; int? FK_RID=0; int Fk_UID = 0;
+            //uiddata uid_obj = new uiddata();
+            List<uiddataobj> uid_ob_list = new List<uiddataobj>();
+            uiddataobj uid_obj = new uiddataobj();
+            int? FK_clientid = 0; bool hitnotify; int? pk_HookId = 0; campaignhookurl campobj = new campaignhookurl();
 
-            string uiderrtrack="noissue";
+            //string uiderrtrack="noissue";
             try
 
             {
@@ -293,40 +304,56 @@ namespace Analytics.Helpers.BO
                 //           //where u.UniqueNumber.Contains(Shorturl.Trim())
                 //           where u.UniqueNumber ==Shorturl
                 //           select u).SingleOrDefault();
-                using(shortenurlEntities db=new shortenurlEntities() )
-                {
-                    db.Database.CommandTimeout = 3 * 60;
+                //using(shortenurlEntities db=new shortenurlEntities() )
+                //{
+                //dc.Database.CommandTimeout = 3 * 60;
                     try
                     {
                       
-                        uiderrtrack = System.DateTime.Now+" ";
-                        ErrorLogs.LogErrorData(uiderrtrack, "testing");
-                        uid_obj = (from u in db.uiddatas
-                                  //.AsNoTracking()
-                                 .AsEnumerable()
-                                   // join r in dc.riddatas on u.FK_RID equals r.PK_Rid
-                                   //where u.UniqueNumber.Contains(Shorturl.Trim())
-                                   where u.UniqueNumber.ToString()==(Shorturl.ToString())
-                                   select u).SingleOrDefault();
+                        //uiderrtrack = System.DateTime.Now+" ";
+                        //ErrorLogs.LogErrorData(uiderrtrack, "testing");
+                      //List<uiddata>  uid_ob = (from u in dc.uiddatas
+                      //             //.AsNoTracking()
+                      //             //.AsEnumerable()
+                      //             where u.UniqueNumber.ToString() == Shorturl.ToString()
+                      //             select u).ToList();
+                        uid_ob_list = (from u in dc.uiddatas
+                                      //.AsNoTracking()
+                                      //.AsEnumerable()
+                                      where u.UniqueNumber == Shorturl
+                                      select new uiddataobj()
+                                      {
+                                          UniqueNumber=u.UniqueNumber,
+                                          FK_RID=u.FK_RID,
+                                          PK_Uid = u.PK_Uid,
+                                          FK_ClientID = u.FK_ClientID,
+                                          MobileNumber=u.MobileNumber,
+                                          LongurlorMessage=u.LongurlorMessage,
+                                          Type=u.Type
+                                      }).ToList();
 
-                        ErrorLogs.LogErrorData(System.DateTime.Now+" "+ uid_obj.UniqueNumber, "testing");
+                        if (uid_ob_list != null)
+                          uid_obj = uid_ob_list.Where(x => x.UniqueNumber.ToString() == Shorturl).Select(y => y).SingleOrDefault();
+                      
                     }
                     catch (Exception ex)
                     {
-                        uiderrtrack = "issue in uiddata query fetching === ";
+                       string uiderrtrack = "issue in uiddata query fetching ===shorturl= " +Shorturl + " " ;
                         ErrorLogs.LogErrorData(uiderrtrack + ex.StackTrace + ex.InnerException, ex.Message);
                     }
-                }
+                //}
                 //if (new OperationsBO().CheckUniqueid(Shorturl))
                 if (uid_obj != null)
                 {
                     longurl = uid_obj.LongurlorMessage;
                     if (uid_obj.Type == "url")
                     {
+
                         if (longurl != null && !longurl.ToLower().StartsWith("http:") && !longurl.ToLower().StartsWith("https:"))
                             HttpContext.Current.Response.Redirect("http://" + longurl);
                         else
                             HttpContext.Current.Response.Redirect(longurl);
+
                     }
                     else if(uid_obj.Type=="message")
                     {
@@ -365,15 +392,12 @@ namespace Analytics.Helpers.BO
                     //string ipv4 = new ConvertionBO().GetIP4Address();
                     var request = HttpContext.Current.Request;
 
-                     ipv4 = IpAddress();  
-                    try
-                    {
-                         ipv6 = request.UserHostAddress;
-                    }
-                    catch (Exception ex)
-                    {
-                         ipv6 = null;
-                    }
+                     ipv4 = IpAddress();
+                     ipv6 = (request.UserHostAddress != null) ? request.UserHostAddress : null;
+                     //browser = (request.Browser.Browser!=null)?request.Browser.Browser:null;
+                     //browserversion = (request.Browser.Version!=null)?request.Browser.Version:null;
+                    //req_url = (request.UrlReferrer != null) ? (request.UrlReferrer.ToString()) : (request.Url.AbsoluteUri);
+                   
                     try
                     {
                          browser = request.Browser.Browser;
@@ -405,12 +429,12 @@ namespace Analytics.Helpers.BO
                     string ismobiledevice = request.Browser.IsMobileDevice.ToString();
                     if(ipv4!="::1" && ipv4!=null&&ipv4!="")
                      ipnum = convertAddresstoNumber(ipv4);
-
+                    if (ipnum == 0 && ipv6 != "::1" && ipv6 != null && ipv6 != "")
+                        ipnum = convertAddresstoNumber(ipv6);
                     //ipnum = convertAddresstoNumber("192.168.1.64");
 
 
                     //check hit table
-                    bool hitnotify; int? pk_HookId = 0; campaignhookurl campobj=new campaignhookurl();
                     try
                     {
                         hitnotify objhit = dc.hitnotifies.Where(x => x.FK_Rid == FK_RID).Select(y => y).FirstOrDefault();
@@ -435,6 +459,7 @@ namespace Analytics.Helpers.BO
 
                     //new DataInsertionBO().Insertshorturldata(ipv4, ipv6, browser, browserversion, City, Region, Country, CountryCode, req_url, useragent, hostname, devicetype, ismobiledevice, Fk_UID, FK_RID, FK_clientid);
                     new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum,browser, browserversion, req_url, useragent, hostname, latitude,longitude, ismobiledevice, Fk_UID, FK_RID, FK_clientid,Cookievalue,uid_obj.MobileNumber,hitnotify,pk_HookId);
+
                     if (campobj != null)
                     {
                         if (campobj.Status == "Pause")
@@ -485,9 +510,11 @@ namespace Analytics.Helpers.BO
             catch (Exception ex)
             {
                 ErrorLogs.LogErrorData(ex.StackTrace+ex.InnerException, ex.Message);
-                if(ipv4!=null)
-                new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum, "", "", req_url, "", "", latitude, longitude, "", Fk_UID, FK_RID, FK_clientid, "", "", false, 0);
+                if (ipv4 != null)
+                {
 
+                    new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum, "", "", req_url, "", "", latitude, longitude, "", Fk_UID, FK_RID, FK_clientid, "", "", false, 0);
+                }
                 //return null;
             }
         }

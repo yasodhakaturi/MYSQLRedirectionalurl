@@ -35,4 +35,14 @@ namespace Analytics.Models
         public int fk_city_master_id { get; set; }
 
     }
+    public class uiddataobj
+    {
+        public string UniqueNumber { get; set; }
+        public int? FK_RID { get; set; }
+        public int? FK_ClientID { get; set; }
+        public int PK_Uid { get; set; }
+        public string MobileNumber { get; set; }
+        public string LongurlorMessage { get; set; }
+        public string Type { get; set; }
+    }
 }

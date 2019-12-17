@@ -389,7 +389,6 @@ namespace Analytics.Controllers
                 //string path = Server.MapPath("../RedirectPage.html");
                 string path = Server.MapPath("~/RedirectPage.aspx" );
 
-               
                 //call monitize service here
                 new OperationsBO().Monitize(rid_param,"","",path);
                 //UserInfo obj_userinfo = new OperationsBO().Monitize(rid_param, latitude, longitude);
