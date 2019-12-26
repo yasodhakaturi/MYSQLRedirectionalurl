@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="52cf323fa1984297bdb7b4f6ad89a6fb" Name="Diagram1">
         <EntityTypeShape EntityType="shortenurlModel.batchuploaddata" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shortenurlModel.city_blocks_ipv4_geolite2" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shortenurlModel.client" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="shortenurlModel.cookietable" Width="1.5" PointX="7.5" PointY="10.5" IsExpanded="true" />
         <EntityTypeShape EntityType="shortenurlModel.errorlog" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
@@ -19,7 +18,6 @@
         <EntityTypeShape EntityType="shortenurlModel.sysdiagram" Width="1.5" PointX="9.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shortenurlModel.tmp_rownum_update" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shortenurlModel.uiddata" Width="1.5" PointX="8.25" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="shortenurlModel.city_locations_geolite2" Width="1.5" PointX="11.75" PointY="10.75" IsExpanded="true" />
         <AssociationConnector Association="shortenurlModel.FK_RIDDATA_Client" ManuallyRouted="false" />
         <AssociationConnector Association="shortenurlModel.FK_UIDDATA_Client" ManuallyRouted="false" />
         <AssociationConnector Association="shortenurlModel.FK_UIDDATA_RIDDATA" ManuallyRouted="false" />
@@ -33,6 +31,9 @@
         <AssociationConnector Association="shortenurlModel.FK_SHORTURLDATA_UIDDATA" />
         <EntityTypeShape EntityType="shortenurlModel.messagelink" Width="1.5" PointX="5.375" PointY="5.75" />
         <EntityTypeShape EntityType="shortenurlModel.stat_counts" Width="1.5" PointX="3.375" PointY="10.75" />
+        <EntityTypeShape EntityType="shortenurlModel.city_blocks_ipv4_geolite2" Width="1.5" PointX="7.375" PointY="13.75" />
+        <EntityTypeShape EntityType="shortenurlModel.city_locations_geolite2" Width="1.5" PointX="9.375" PointY="13.75" />
+        <EntityTypeShape EntityType="shortenurlModel.excluded_shorturl" Width="1.5" PointX="11.375" PointY="13.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

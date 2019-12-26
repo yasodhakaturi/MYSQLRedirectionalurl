@@ -259,6 +259,9 @@
     <Compile Include="errorlog.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="excluded_shorturl.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="freegeoipdata.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
