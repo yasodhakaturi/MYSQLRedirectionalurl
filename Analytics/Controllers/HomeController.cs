@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Mvc;
 
 namespace Analytics.Controllers
@@ -227,150 +230,11 @@ namespace Analytics.Controllers
         //}
 
         //}
-        public string GetCountryName(string CountryCode)
-        {
-            RegionInfo cultureInfo = new RegionInfo(CountryCode);
-            string CountryName = cultureInfo.EnglishName;
-            return CountryName;
-        }
-
-        public void MSYNC()
-        
-        {
-            try
-            {
-                long? rowUpated = 0; List<List_IP> NotFoundIps = new List<List_IP>(); List<CountryCityModel> list_CountryCity = new List<CountryCityModel>();
-                long? lastrow_updated_id = dc.tmp_rownum_update.Select(x => x.row_update).SingleOrDefault();
-                List<List_IP> ipobj = (from s in dc.shorturldatas
-                                       where s.PK_Shorturl > lastrow_updated_id
-                                       select new List_IP()
-                                       {
-                                           ipnum = s.ip_num,
-                                           ipaddress = s.Ipv4,
-                                           pk_shorturl_id = s.PK_Shorturl
-                                       }).ToList();
-                //check if any records are there for updation
-                if (ipobj.Count != 0)
-                {
-                    //get matched records from master_location table
-                    List<locids> locids = ipobj.Where(i => dc.master_location.AsNoTracking().Any(foo => i.ipnum >= foo.startIpNum && i.ipnum <= foo.endIpNum)).Select(x => new locids() { ipnum = x.ipnum, pk_shorturl_id = x.pk_shorturl_id, localid = dc.master_location.Where(foo => x.ipnum >= foo.startIpNum && x.ipnum <= foo.endIpNum).Select(y => y.locId).FirstOrDefault(), fk_city_master_id = dc.master_location.Where(foo => x.ipnum >= foo.startIpNum && x.ipnum <= foo.endIpNum).Select(y => y.PK_MASTERID).FirstOrDefault() }).ToList();
-
-                    if (locids.Count != 0)
-                    {
-                        //get records from location_data table
-                         list_CountryCity = (from l in dc.locations_data
-
-                                                                  .AsNoTracking()
-                                                                  .AsEnumerable() // Continue in memory
-                                                                   join i in locids on l.locId equals i.localid
-                                                                   where l.locId == i.localid
-
-                                                                   select new CountryCityModel()
-                                                                   {
-                                                                       ipnum = i.ipnum,
-                                                                       Country = GetCountryName(l.country),
-                                                                       CountryCode = l.country,
-                                                                       City = l.city,
-                                                                       Region = l.region,
-                                                                       PostalCode = l.postalCode,
-                                                                       latitude = l.latitude,
-                                                                       longitude = l.longitude,
-                                                                       metro_code = l.metroCode,
-                                                                       fk_city_master_id = i.fk_city_master_id,
-                                                                       pk_shorturl_id = i.pk_shorturl_id
-
-                                                                   }).ToList();
-                        if (list_CountryCity.Count != 0)
-                        {
-                         //check if any ips not found in databaase tables
-                            if (list_CountryCity.Count != ipobj.Count)
-                            {
-                                NotFoundIps = ipobj.Where(p => !list_CountryCity.Any(p2 => p2.ipnum == p.ipnum)).ToList();
-                            }
-                            //foreach (CountryCityModel i in list_CountryCity)
-                            //{
-                            //    new DataInsertionBO().UpdateCityCountry(i);
-                            //}
-                            
-                        }
-                        else
-                        {
-                            NotFoundIps = ipobj;
-
-                        }
-                        if (NotFoundIps.Count != 0)
-                        {
-                            //get data from freegeoip service and save data for future use
-                          List<CountryCityModel> list=  new DataInsertionBO().GetDataForNotFoundIPS(NotFoundIps);
-                          list_CountryCity = list_CountryCity.Concat(list).ToList();
-                        }
-                        
-                    }
-                    else
-                    {
-                        //if no record found in master_location table
-                        NotFoundIps = ipobj;
-
-                        List<CountryCityModel> list = new DataInsertionBO().GetDataForNotFoundIPS(NotFoundIps);
-                        list_CountryCity = list_CountryCity.Concat(list).ToList();
-
-                    }
-                    foreach (CountryCityModel i in list_CountryCity)
-                    {
-                        new DataInsertionBO().UpdateCityCountry(i);
-                    }
-                    List_IP lastrecord = ipobj[ipobj.Count - 1];
-                    rowUpated = lastrecord.pk_shorturl_id;
-                    tmp_rownum_update obj = new tmp_rownum_update();
-                    obj.row_update = rowUpated;
-                    new DataInsertionBO().UpdateRowid(rowUpated);
-                }
-            }
-            catch (Exception ex)
-            {
-
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-
-            }
-            //List<CountryCityModel> ipdata = (from m in dc.master_location
-            //              join l in dc.locations_data on m.locId equals l.locId
-            //              select new CountryCityModel()
-            //              {
-            //                  startIpNum=m.startIpNum,
-            //                  endIpNum=m.endIpNum,
-            //                  //Country=GetCountryName(l.country),
-            //                  CountryCode=l.country,
-            //                  City=l.city,
-            //                  Region=l.region,
-            //                  PostalCode=l.postalCode,
-            //                  latitude=l.latitude,
-            //                  longitude=l.longitude,
-            //                  metro_code=l.metroCode,
-            //                  fk_city_master_id=m.PK_MASTERID
-            //                 // pk_shorturl_id=m.PK_MASTERID
-            //              }).ToList();
-
-            //var lobj = ipdata.Where(i => ipobj.Any(foo => foo.ipnum >= i.startIpNum && foo.ipnum <= i.endIpNum)).
-            //                          Select(l => new CountryCityModel()
-            //                          {
-            //                              Country = GetCountryName(l.CountryCode),
-            //                              CountryCode = l.CountryCode,
-            //                              City = l.City,
-            //                              Region = l.Region,
-            //                              PostalCode = l.PostalCode,
-            //                              latitude = l.latitude,
-            //                              longitude = l.longitude,
-            //                              metro_code = l.metro_code,
-            //                              fk_city_master_id = l.fk_city_master_id,
-            //                              pk_shorturl_id = l.pk_shorturl_id
-            //                              // pk_shorturl_id=(from i in ipobj select i.pk_shorturl_id).Single()}).ToList();
-            //                          }).ToList();
 
 
-
-        }
         //public ActionResult LoginRid(string latitude, string longitude, string rid_param)
         //public void LoginRid(string latitude, string longitude)
+       // [PreventSpam(DelayRequest=1)]
     public void LoginRid ()   
     {
             try
@@ -389,6 +253,8 @@ namespace Analytics.Controllers
                 //string path = Server.MapPath("../RedirectPage.html");
                 string path = Server.MapPath("~/RedirectPage.aspx" );
 
+                ErrorLogs.LogErrorData(" Starting point ... before monitize", DateTime.UtcNow.ToString());
+
                 //call monitize service here
                 new OperationsBO().Monitize(rid_param,"","",path);
                 //UserInfo obj_userinfo = new OperationsBO().Monitize(rid_param, latitude, longitude);
@@ -403,78 +269,145 @@ namespace Analytics.Controllers
             }
         }
 
-        //public string ValidateRid(string password, string chkRemember)
-        //{
-        //    try
-        //    {
 
-        //        if (password != null)
-        //        {
-        //            string rid_param = "";
-        //            if (Request.UrlReferrer.LocalPath != "")
-        //            {
-        //                //rid_param = Request.Params["rid"];
-        //                rid_param = Request.UrlReferrer.LocalPath;
-        //                if (rid_param.Contains("/"))
-        //                    rid_param = rid_param.Replace("/", "");
-        //                if (rid_param.Contains(@"\"))
-        //                    rid_param = rid_param.Replace(@"\", "");
-        //                rid_param = rid_param.Trim();
-        //                long decodedvalue = new ConvertionBO().BaseToLong(rid_param);
-        //                int rid_shorturl = Convert.ToInt32(decodedvalue);
-        //                int? rid_value = 0;
-        //                PWDDataBO obj = new OperationsBO().GetUIDriddata(rid_shorturl);
-        //                if (obj != null && obj.typediff == "2")
-        //                {
-        //                    rid_value = obj.UIDorRID;
-        //                    int? clientid = dc.riddatas.Where(x => x.PK_Rid == rid_value).Select(y => y.FK_ClientId).SingleOrDefault();
-        //                    Client clientobj = dc.Clients.Where(x => x.PK_ClientID == clientid).SingleOrDefault();
-        //                    string userdata = clientobj.PK_ClientID + "^" + clientobj.UserName + "^" + clientobj.Role;
-        //                    Session["rid"] = rid_value;
-        //                    if (rid_value != 0)
-        //                        if (new OperationsBO().CheckPassword_riddata(rid_value, password))
-        //                        {
-        //                            if (Convert.ToBoolean(chkRemember) == true)
-        //                            {
-        //                                byte[] hash = Helper.GetHashKey("superadmin@moozup.com" + "Moozup");
-        //                                string credentials = rid_value + "~" + password+"~"+chkRemember;
-        //                                HttpCookie cookie = new HttpCookie("AnalyticsLogin");
-        //                                string cookievalue = Helper.Encrypt(hash, credentials);
-        //                                cookie.Value = cookievalue;
-        //                                cookie.Expires = DateTime.Now.AddYears(1);
-        //                                Response.Cookies.Add(cookie);
-        //                            }
-        //                            //return "Success~/../Analytics/Index?rid=" + rid_shorturl;
-        //                            return "Success~/../Analytics/Analytics?rid=" + rid_shorturl;
+    //public class PreventSpamAttribute : ActionFilterAttribute
+    //{
+    //    // This stores the time between Requests (in seconds)
+    //    public int DelayRequest = 10;
+    //    // The Error Message that will be displayed in case of 
+    //    // excessive Requests
+    //    public string ErrorMessage = "Excessive Request Attempts Detected.";
+    //    // This will store the URL to Redirect errors to
+    //    public string RedirectURL;
 
-        //                        }
-        //                }
-        //                //else if (obj != null && obj.TypeDiff == "1")
-        //                //{
-        //                //    //call monitize service here
-        //                //    new OperationsBO().Monitize(rid_param);
-        //                //}
-        //                else
-        //                {
-        //                    return "Failed~Wrong Password";
-        //                }
+    //    public override void OnActionExecuting(ActionExecutingContext filterContext)
+    //    {
+    //        base.OnActionExecuting(filterContext);
+    //    }
+    //}
+    //protected override void OnActionExecuting(ActionExecutingContext filterContext)
+    //{
+    //    try
+    //    {
+    //        int DelayRequest = 10;
+    //        // Store our HttpContext (for easier reference and code brevity)
+    //        var request = filterContext.HttpContext.Request;
+    //        // Store our HttpContext.Cache (for easier reference and code brevity)
+    //        var cache = filterContext.HttpContext.Cache;
 
-        //            }
-        //            return "Failed~Invalid password";
+    //        // Grab the IP Address from the originating Request (example)
+    //        var originationInfo = request.ServerVariables["HTTP_X_FORWARDED_FOR"] ?? request.UserHostAddress;
 
-        //        }
-        //        else
-        //        {
-        //            return "Failed~Invalid password";
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
+    //        // Append the User Agent
+    //        originationInfo += request.UserAgent;
 
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-        //        return new HttpStatusCodeResult(400, ex.Message).ToString();
-        //    }
+    //        // Now we just need the target URL Information
+    //        var targetInfo = request.RawUrl + request.QueryString;
 
-        //}
+    //        // Generate a hash for your strings (appends each of the bytes of
+    //        // the value into a single hashed string
+    //        var hashValue = string.Join("", MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(originationInfo + targetInfo)).Select(s => s.ToString("x2")));
+
+    //        // Checks if the hashed value is contained in the Cache (indicating a repeat request)
+    //        if (cache[hashValue] != null)
+    //        {
+    //            // Adds the Error Message to the Model and Redirect
+    //            //filterContext.Controller.ViewData.ModelState.AddModelError("ExcessiveRequests", ErrorMessage);
+    //            ErrorLogs.LogErrorData("ExcessiveRequests found --" + targetInfo, "useragent --" + originationInfo);
+    //        }
+    //        else
+    //        {
+    //            // Adds an empty object to the cache using the hashValue
+    //            // to a key (This sets the expiration that will determine
+    //            // if the Request is valid or not)
+    //              cache.Add(hashValue, null, null, DateTime.Now.AddSeconds(DelayRequest), Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
+    //            //cache.Add(hashValue, DateTime.Now.AddSeconds(DelayRequest),null, Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
+
+    //            //cache.Add(hashValue, null, null, DateTime.Now.AddSeconds(DelayRequest), Cache.NoAbsoluteExpiration,CacheItemPriority.Default, null);
+    //        }
+    //        OnActionExecuting(filterContext);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+    //        //return null;
+    //    }
+    //}
+
+
+
+    //public string ValidateRid(string password, string chkRemember)
+    //{
+    //    try
+    //    {
+
+    //        if (password != null)
+    //        {
+    //            string rid_param = "";
+    //            if (Request.UrlReferrer.LocalPath != "")
+    //            {
+    //                //rid_param = Request.Params["rid"];
+    //                rid_param = Request.UrlReferrer.LocalPath;
+    //                if (rid_param.Contains("/"))
+    //                    rid_param = rid_param.Replace("/", "");
+    //                if (rid_param.Contains(@"\"))
+    //                    rid_param = rid_param.Replace(@"\", "");
+    //                rid_param = rid_param.Trim();
+    //                long decodedvalue = new ConvertionBO().BaseToLong(rid_param);
+    //                int rid_shorturl = Convert.ToInt32(decodedvalue);
+    //                int? rid_value = 0;
+    //                PWDDataBO obj = new OperationsBO().GetUIDriddata(rid_shorturl);
+    //                if (obj != null && obj.typediff == "2")
+    //                {
+    //                    rid_value = obj.UIDorRID;
+    //                    int? clientid = dc.riddatas.Where(x => x.PK_Rid == rid_value).Select(y => y.FK_ClientId).SingleOrDefault();
+    //                    Client clientobj = dc.Clients.Where(x => x.PK_ClientID == clientid).SingleOrDefault();
+    //                    string userdata = clientobj.PK_ClientID + "^" + clientobj.UserName + "^" + clientobj.Role;
+    //                    Session["rid"] = rid_value;
+    //                    if (rid_value != 0)
+    //                        if (new OperationsBO().CheckPassword_riddata(rid_value, password))
+    //                        {
+    //                            if (Convert.ToBoolean(chkRemember) == true)
+    //                            {
+    //                                byte[] hash = Helper.GetHashKey("superadmin@moozup.com" + "Moozup");
+    //                                string credentials = rid_value + "~" + password + "~" + chkRemember;
+    //                                HttpCookie cookie = new HttpCookie("AnalyticsLogin");
+    //                                string cookievalue = Helper.Encrypt(hash, credentials);
+    //                                cookie.Value = cookievalue;
+    //                                cookie.Expires = DateTime.Now.AddYears(1);
+    //                                Response.Cookies.Add(cookie);
+    //                            }
+    //                            //return "Success~/../Analytics/Index?rid=" + rid_shorturl;
+    //                            return "Success~/../Analytics/Analytics?rid=" + rid_shorturl;
+
+    //                        }
+    //                }
+    //                //else if (obj != null && obj.TypeDiff == "1")
+    //                //{
+    //                //    //call monitize service here
+    //                //    new OperationsBO().Monitize(rid_param);
+    //                //}
+    //                else
+    //                {
+    //                    return "Failed~Wrong Password";
+    //                }
+
+    //            }
+    //            return "Failed~Invalid password";
+
+    //        }
+    //        else
+    //        {
+    //            return "Failed~Invalid password";
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+
+    //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+    //        return new HttpStatusCodeResult(400, ex.Message).ToString();
+    //    }
+
+    //}
     }
 }

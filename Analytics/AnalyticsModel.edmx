@@ -118,7 +118,8 @@
           <Property Name="Req_url" Type="longtext" />
           <Property Name="UserAgent" Type="longtext" />
           <Property Name="IsMobileDevice" Type="varchar" MaxLength="50" />
-          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+          <Property Name="HeaderValues" Type="varchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" Precision="0" />
           <Property Name="FK_Uid" Type="int" />
           <Property Name="FK_RID" Type="int" />
           <Property Name="FK_ClientID" Type="int" />
@@ -1064,6 +1065,7 @@
           <Property Name="Req_url" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
           <Property Name="UserAgent" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
           <Property Name="IsMobileDevice" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HeaderValues" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" />
           <Property Name="FK_Uid" Type="Int32" />
           <Property Name="FK_RID" Type="Int32" />
@@ -1427,6 +1429,7 @@
                 <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
                 <ScalarProperty Name="FK_Uid" ColumnName="FK_Uid" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="HeaderValues" ColumnName="HeaderValues" />
                 <ScalarProperty Name="IsMobileDevice" ColumnName="IsMobileDevice" />
                 <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
                 <ScalarProperty Name="Req_url" ColumnName="Req_url" />
