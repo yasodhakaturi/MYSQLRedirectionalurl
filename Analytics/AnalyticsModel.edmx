@@ -108,9 +108,9 @@
         </EntityType>
         <EntityType Name="excluded_shorturl">
           <Key>
-            <PropertyRef Name="PK_Shorturl" />
+            <PropertyRef Name="PK_Exclude_Shorturl" />
           </Key>
-          <Property Name="PK_Shorturl" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PK_Exclude_Shorturl" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Ipv4" Type="varchar" MaxLength="450" />
           <Property Name="Ipv6" Type="varchar" MaxLength="450" />
           <Property Name="Browser" Type="varchar" MaxLength="50" />
@@ -118,11 +118,11 @@
           <Property Name="Req_url" Type="longtext" />
           <Property Name="UserAgent" Type="longtext" />
           <Property Name="IsMobileDevice" Type="varchar" MaxLength="50" />
-          <Property Name="HeaderValues" Type="varchar" MaxLength="100" />
-          <Property Name="CreatedDate" Type="datetime" Precision="0" />
+          <Property Name="HeaderValues" Type="varchar" MaxLength="600" />
           <Property Name="FK_Uid" Type="int" />
           <Property Name="FK_RID" Type="int" />
           <Property Name="FK_ClientID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
         </EntityType>
         <EntityType Name="freegeoipdata">
           <Key>
@@ -1055,9 +1055,9 @@
         </EntityType>
         <EntityType Name="excluded_shorturl">
           <Key>
-            <PropertyRef Name="PK_Shorturl" />
+            <PropertyRef Name="PK_Exclude_Shorturl" />
           </Key>
-          <Property Name="PK_Shorturl" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PK_Exclude_Shorturl" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Ipv4" Type="String" MaxLength="450" FixedLength="false" Unicode="false" />
           <Property Name="Ipv6" Type="String" MaxLength="450" FixedLength="false" Unicode="false" />
           <Property Name="Browser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -1065,11 +1065,11 @@
           <Property Name="Req_url" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
           <Property Name="UserAgent" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
           <Property Name="IsMobileDevice" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="HeaderValues" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="HeaderValues" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
           <Property Name="FK_Uid" Type="Int32" />
           <Property Name="FK_RID" Type="Int32" />
           <Property Name="FK_ClientID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1425,10 +1425,10 @@
           <EntitySetMapping Name="excluded_shorturl">
             <EntityTypeMapping TypeName="shortenurlModel.excluded_shorturl">
               <MappingFragment StoreEntitySet="excluded_shorturl">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
                 <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
                 <ScalarProperty Name="FK_Uid" ColumnName="FK_Uid" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="HeaderValues" ColumnName="HeaderValues" />
                 <ScalarProperty Name="IsMobileDevice" ColumnName="IsMobileDevice" />
                 <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
@@ -1437,7 +1437,7 @@
                 <ScalarProperty Name="Browser" ColumnName="Browser" />
                 <ScalarProperty Name="Ipv6" ColumnName="Ipv6" />
                 <ScalarProperty Name="Ipv4" ColumnName="Ipv4" />
-                <ScalarProperty Name="PK_Shorturl" ColumnName="PK_Shorturl" />
+                <ScalarProperty Name="PK_Exclude_Shorturl" ColumnName="PK_Exclude_Shorturl" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
