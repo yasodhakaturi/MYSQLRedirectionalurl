@@ -252,6 +252,7 @@
           <Property Name="FK_City_Master_id" Type="int" />
           <Property Name="ACK" Type="varchar" MaxLength="45" />
           <Property Name="ACKDATE" Type="datetime" Precision="6" />
+          <Property Name="Request_Header" Type="varchar" MaxLength="600" />
         </EntityType>
         <EntityType Name="stat_counts">
           <Key>
@@ -570,7 +571,6 @@
           <Property Name="CookieValue" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="MobileNumber" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="FK_ShorturlId" Type="Int32" />
-          <NavigationProperty Name="shorturldata" Relationship="shortenurlModel.FK_CookieTable_SHORTURLDATA" FromRole="cookietable" ToRole="shorturldata" />
         </EntityType>
         <EntityType Name="errorlog">
           <Key>
@@ -692,8 +692,8 @@
           <Property Name="FK_Batchid" Type="Int32" />
           <NavigationProperty Name="client" Relationship="Self.FK_UIDDATA_Client" FromRole="uiddata" ToRole="client" />
           <NavigationProperty Name="riddata" Relationship="Self.FK_UIDDATA_RIDDATA" FromRole="uiddata" ToRole="riddata" />
-          <NavigationProperty Name="shorturldatas" Relationship="shortenurlModel.FK_SHORTURLDATA_UIDDATA" FromRole="uiddata" ToRole="shorturldata" />
           <Property Name="ExistingUrlBatchIds" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="shorturldatas" Relationship="shortenurlModel.FK_SHORTURLDATA_UIDDATA" FromRole="uiddata" ToRole="shorturldata" />
         </EntityType>
         <Association Name="FK_RIDDATA_Client">
           <End Role="client" Type="Self.client" Multiplicity="1" />
@@ -797,18 +797,19 @@
           </FunctionImport>
           <EntitySet Name="campaignhookurls" EntityType="shortenurlModel.campaignhookurl" />
           <EntitySet Name="hitnotifies" EntityType="shortenurlModel.hitnotify" />
-          <EntitySet Name="shorturldatas" EntityType="shortenurlModel.shorturldata" />
           <AssociationSet Name="hitnotify_ibfk_1" Association="shortenurlModel.hitnotify_ibfk_1">
             <End Role="campaignhookurl" EntitySet="campaignhookurls" />
             <End Role="hitnotify" EntitySet="hitnotifies" />
           </AssociationSet>
+          <EntitySet Name="messagelinks" EntityType="shortenurlModel.messagelink" />
+          <EntitySet Name="stat_counts" EntityType="shortenurlModel.stat_counts" />
+          <EntitySet Name="city_blocks_ipv4_geolite2" EntityType="shortenurlModel.city_blocks_ipv4_geolite2" />
+          <EntitySet Name="city_locations_geolite2" EntityType="shortenurlModel.city_locations_geolite2" />
+          <EntitySet Name="excluded_shorturl" EntityType="shortenurlModel.excluded_shorturl" />
+          <EntitySet Name="shorturldatas" EntityType="shortenurlModel.shorturldata" />
           <AssociationSet Name="FK_SHORTURLDATA_Client" Association="shortenurlModel.FK_SHORTURLDATA_Client">
             <End Role="client" EntitySet="clients" />
             <End Role="shorturldata" EntitySet="shorturldatas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CookieTable_SHORTURLDATA" Association="shortenurlModel.FK_CookieTable_SHORTURLDATA">
-            <End Role="shorturldata" EntitySet="shorturldatas" />
-            <End Role="cookietable" EntitySet="cookietables" />
           </AssociationSet>
           <AssociationSet Name="FK_SHORTURLDATA_RIDDATA" Association="shortenurlModel.FK_SHORTURLDATA_RIDDATA">
             <End Role="riddata" EntitySet="riddatas" />
@@ -818,11 +819,6 @@
             <End Role="uiddata" EntitySet="uiddatas" />
             <End Role="shorturldata" EntitySet="shorturldatas" />
           </AssociationSet>
-          <EntitySet Name="messagelinks" EntityType="shortenurlModel.messagelink" />
-          <EntitySet Name="stat_counts" EntityType="shortenurlModel.stat_counts" />
-          <EntitySet Name="city_blocks_ipv4_geolite2" EntityType="shortenurlModel.city_blocks_ipv4_geolite2" />
-          <EntitySet Name="city_locations_geolite2" EntityType="shortenurlModel.city_locations_geolite2" />
-          <EntitySet Name="excluded_shorturl" EntityType="shortenurlModel.excluded_shorturl" />
           </EntityContainer>
         <EntityType Name="campaignhookurl">
           <Key>
@@ -849,46 +845,6 @@
           <Property Name="FK_HookID" Type="Int32" />
           <NavigationProperty Name="campaignhookurl" Relationship="shortenurlModel.hitnotify_ibfk_1" FromRole="hitnotify" ToRole="campaignhookurl" />
         </EntityType>
-        <EntityType Name="shorturldata">
-          <Key>
-            <PropertyRef Name="PK_Shorturl" />
-          </Key>
-          <Property Name="PK_Shorturl" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ipv4" Type="String" MaxLength="450" FixedLength="false" Unicode="false" />
-          <Property Name="Ipv6" Type="String" MaxLength="450" FixedLength="false" Unicode="false" />
-          <Property Name="ip_num" Type="Int64" />
-          <Property Name="Browser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Browser_version" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CountryCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PostalCode" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="City_Latitude" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="City_Longitude" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="Latitude" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="Longitude" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="MetroCode" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="Req_url" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="UserAgent" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="Hostname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DeviceName" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="DeviceBrand" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="OS_Name" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="OS_Version" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="IsMobileDevice" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedDate" Type="DateTime" />
-          <Property Name="FK_Uid" Type="Int32" />
-          <Property Name="FK_RID" Type="Int32" />
-          <Property Name="FK_ClientID" Type="Int32" />
-          <Property Name="FK_City_Master_id" Type="Int32" />
-          <Property Name="ACK" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="ACKDATE" Type="DateTime" />
-          <NavigationProperty Name="client" Relationship="shortenurlModel.FK_SHORTURLDATA_Client" FromRole="shorturldata" ToRole="client" />
-          <NavigationProperty Name="cookietables" Relationship="shortenurlModel.FK_CookieTable_SHORTURLDATA" FromRole="shorturldata" ToRole="cookietable" />
-          <NavigationProperty Name="riddata" Relationship="shortenurlModel.FK_SHORTURLDATA_RIDDATA" FromRole="shorturldata" ToRole="riddata" />
-          <NavigationProperty Name="uiddata" Relationship="shortenurlModel.FK_SHORTURLDATA_UIDDATA" FromRole="shorturldata" ToRole="uiddata" />
-        </EntityType>
         <Association Name="hitnotify_ibfk_1">
           <End Type="shortenurlModel.campaignhookurl" Role="campaignhookurl" Multiplicity="0..1" />
           <End Type="shortenurlModel.hitnotify" Role="hitnotify" Multiplicity="*" />
@@ -898,54 +854,6 @@
             </Principal>
             <Dependent Role="hitnotify">
               <PropertyRef Name="FK_HookID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SHORTURLDATA_Client">
-          <End Type="shortenurlModel.client" Role="client" Multiplicity="0..1" />
-          <End Type="shortenurlModel.shorturldata" Role="shorturldata" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="client">
-              <PropertyRef Name="PK_ClientID" />
-            </Principal>
-            <Dependent Role="shorturldata">
-              <PropertyRef Name="FK_ClientID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CookieTable_SHORTURLDATA">
-          <End Type="shortenurlModel.shorturldata" Role="shorturldata" Multiplicity="0..1" />
-          <End Type="shortenurlModel.cookietable" Role="cookietable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="shorturldata">
-              <PropertyRef Name="PK_Shorturl" />
-            </Principal>
-            <Dependent Role="cookietable">
-              <PropertyRef Name="FK_ShorturlId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SHORTURLDATA_RIDDATA">
-          <End Type="shortenurlModel.riddata" Role="riddata" Multiplicity="0..1" />
-          <End Type="shortenurlModel.shorturldata" Role="shorturldata" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="riddata">
-              <PropertyRef Name="PK_Rid" />
-            </Principal>
-            <Dependent Role="shorturldata">
-              <PropertyRef Name="FK_RID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SHORTURLDATA_UIDDATA">
-          <End Type="shortenurlModel.uiddata" Role="uiddata" Multiplicity="0..1" />
-          <End Type="shortenurlModel.shorturldata" Role="shorturldata" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="uiddata">
-              <PropertyRef Name="PK_Uid" />
-            </Principal>
-            <Dependent Role="shorturldata">
-              <PropertyRef Name="FK_Uid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1071,6 +979,82 @@
           <Property Name="FK_ClientID" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" />
         </EntityType>
+        <EntityType Name="shorturldata">
+          <Key>
+            <PropertyRef Name="PK_Shorturl" />
+          </Key>
+          <Property Name="PK_Shorturl" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ipv4" Type="String" MaxLength="450" FixedLength="false" Unicode="false" />
+          <Property Name="Ipv6" Type="String" MaxLength="450" FixedLength="false" Unicode="false" />
+          <Property Name="ip_num" Type="Int64" />
+          <Property Name="Browser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Browser_version" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CountryCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="City_Latitude" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="City_Longitude" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Latitude" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Longitude" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="MetroCode" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Req_url" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="UserAgent" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Hostname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeviceName" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="DeviceBrand" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="OS_Name" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="OS_Version" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="IsMobileDevice" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="FK_Uid" Type="Int32" />
+          <Property Name="FK_RID" Type="Int32" />
+          <Property Name="FK_ClientID" Type="Int32" />
+          <Property Name="FK_City_Master_id" Type="Int32" />
+          <Property Name="ACK" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ACKDATE" Type="DateTime" />
+          <Property Name="Request_Header" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="client" Relationship="shortenurlModel.FK_SHORTURLDATA_Client" FromRole="shorturldata" ToRole="client" />
+          <NavigationProperty Name="riddata" Relationship="shortenurlModel.FK_SHORTURLDATA_RIDDATA" FromRole="shorturldata" ToRole="riddata" />
+          <NavigationProperty Name="uiddata" Relationship="shortenurlModel.FK_SHORTURLDATA_UIDDATA" FromRole="shorturldata" ToRole="uiddata" />
+        </EntityType>
+        <Association Name="FK_SHORTURLDATA_Client">
+          <End Type="shortenurlModel.client" Role="client" Multiplicity="0..1" />
+          <End Type="shortenurlModel.shorturldata" Role="shorturldata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="client">
+              <PropertyRef Name="PK_ClientID" />
+            </Principal>
+            <Dependent Role="shorturldata">
+              <PropertyRef Name="FK_ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SHORTURLDATA_RIDDATA">
+          <End Type="shortenurlModel.riddata" Role="riddata" Multiplicity="0..1" />
+          <End Type="shortenurlModel.shorturldata" Role="shorturldata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="riddata">
+              <PropertyRef Name="PK_Rid" />
+            </Principal>
+            <Dependent Role="shorturldata">
+              <PropertyRef Name="FK_RID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SHORTURLDATA_UIDDATA">
+          <End Type="shortenurlModel.uiddata" Role="uiddata" Multiplicity="0..1" />
+          <End Type="shortenurlModel.shorturldata" Role="shorturldata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="uiddata">
+              <PropertyRef Name="PK_Uid" />
+            </Principal>
+            <Dependent Role="shorturldata">
+              <PropertyRef Name="FK_Uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1277,43 +1261,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="shorturldatas">
-            <EntityTypeMapping TypeName="shortenurlModel.shorturldata">
-              <MappingFragment StoreEntitySet="shorturldata">
-                <ScalarProperty Name="ACKDATE" ColumnName="ACKDATE" />
-                <ScalarProperty Name="ACK" ColumnName="ACK" />
-                <ScalarProperty Name="FK_City_Master_id" ColumnName="FK_City_Master_id" />
-                <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
-                <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
-                <ScalarProperty Name="FK_Uid" ColumnName="FK_Uid" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsMobileDevice" ColumnName="IsMobileDevice" />
-                <ScalarProperty Name="OS_Version" ColumnName="OS_Version" />
-                <ScalarProperty Name="OS_Name" ColumnName="OS_Name" />
-                <ScalarProperty Name="DeviceBrand" ColumnName="DeviceBrand" />
-                <ScalarProperty Name="DeviceName" ColumnName="DeviceName" />
-                <ScalarProperty Name="Hostname" ColumnName="Hostname" />
-                <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
-                <ScalarProperty Name="Req_url" ColumnName="Req_url" />
-                <ScalarProperty Name="MetroCode" ColumnName="MetroCode" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="City_Longitude" ColumnName="City_Longitude" />
-                <ScalarProperty Name="City_Latitude" ColumnName="City_Latitude" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="Region" ColumnName="Region" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Browser_version" ColumnName="Browser_version" />
-                <ScalarProperty Name="Browser" ColumnName="Browser" />
-                <ScalarProperty Name="ip_num" ColumnName="ip_num" />
-                <ScalarProperty Name="Ipv6" ColumnName="Ipv6" />
-                <ScalarProperty Name="Ipv4" ColumnName="Ipv4" />
-                <ScalarProperty Name="PK_Shorturl" ColumnName="PK_Shorturl" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="messagelinks">
             <EntityTypeMapping TypeName="shortenurlModel.messagelink">
               <MappingFragment StoreEntitySet="messagelinks">
@@ -1438,6 +1385,44 @@
                 <ScalarProperty Name="Ipv6" ColumnName="Ipv6" />
                 <ScalarProperty Name="Ipv4" ColumnName="Ipv4" />
                 <ScalarProperty Name="PK_Exclude_Shorturl" ColumnName="PK_Exclude_Shorturl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="shorturldatas">
+            <EntityTypeMapping TypeName="shortenurlModel.shorturldata">
+              <MappingFragment StoreEntitySet="shorturldata">
+                <ScalarProperty Name="Request_Header" ColumnName="Request_Header" />
+                <ScalarProperty Name="ACKDATE" ColumnName="ACKDATE" />
+                <ScalarProperty Name="ACK" ColumnName="ACK" />
+                <ScalarProperty Name="FK_City_Master_id" ColumnName="FK_City_Master_id" />
+                <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
+                <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
+                <ScalarProperty Name="FK_Uid" ColumnName="FK_Uid" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsMobileDevice" ColumnName="IsMobileDevice" />
+                <ScalarProperty Name="OS_Version" ColumnName="OS_Version" />
+                <ScalarProperty Name="OS_Name" ColumnName="OS_Name" />
+                <ScalarProperty Name="DeviceBrand" ColumnName="DeviceBrand" />
+                <ScalarProperty Name="DeviceName" ColumnName="DeviceName" />
+                <ScalarProperty Name="Hostname" ColumnName="Hostname" />
+                <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
+                <ScalarProperty Name="Req_url" ColumnName="Req_url" />
+                <ScalarProperty Name="MetroCode" ColumnName="MetroCode" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="City_Longitude" ColumnName="City_Longitude" />
+                <ScalarProperty Name="City_Latitude" ColumnName="City_Latitude" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Browser_version" ColumnName="Browser_version" />
+                <ScalarProperty Name="Browser" ColumnName="Browser" />
+                <ScalarProperty Name="ip_num" ColumnName="ip_num" />
+                <ScalarProperty Name="Ipv6" ColumnName="Ipv6" />
+                <ScalarProperty Name="Ipv4" ColumnName="Ipv4" />
+                <ScalarProperty Name="PK_Shorturl" ColumnName="PK_Shorturl" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

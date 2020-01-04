@@ -42,12 +42,12 @@ namespace Analytics
         public virtual DbSet<uiddata> uiddatas { get; set; }
         public virtual DbSet<campaignhookurl> campaignhookurls { get; set; }
         public virtual DbSet<hitnotify> hitnotifies { get; set; }
-        public virtual DbSet<shorturldata> shorturldatas { get; set; }
         public virtual DbSet<messagelink> messagelinks { get; set; }
         public virtual DbSet<stat_counts> stat_counts { get; set; }
         public virtual DbSet<city_blocks_ipv4_geolite2> city_blocks_ipv4_geolite2 { get; set; }
         public virtual DbSet<city_locations_geolite2> city_locations_geolite2 { get; set; }
         public virtual DbSet<excluded_shorturl> excluded_shorturl { get; set; }
+        public virtual DbSet<shorturldata> shorturldatas { get; set; }
     
         public virtual int InsertRIDData(string campaignName, string referencenumber, string pwd, Nullable<int> clientid)
         {
