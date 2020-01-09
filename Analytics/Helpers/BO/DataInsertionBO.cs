@@ -131,7 +131,7 @@ namespace Analytics.Helpers.BO
         }
 
 
-        public void Insertshorturldata(string ipv4, string ipv6, long ipnum, string browser, string browser_version, string req_url, string useragent, string hostname, string latitude,string longitude, string ismobiledevice, int? fk_uid, int? fk_rid, int? FK_clientid,string CookieValue,string MobileNumber,bool hitnotify,int? PK_HookId)
+        public void Insertshorturldata(string ipv4, string ipv6, long ipnum, string browser, string browser_version, string req_url, string useragent, string hostname, string latitude,string longitude, string ismobiledevice, int? fk_uid, int? fk_rid, int? FK_clientid,string CookieValue,string MobileNumber,bool hitnotify,int? PK_HookId,string HeaderValues,string ipheadertype)
         {
             MySqlConnection lSQLConn = null;
             MySqlCommand lSQLCmd = new MySqlCommand();
@@ -170,6 +170,8 @@ namespace Analytics.Helpers.BO
                 lSQLCmd.Parameters.Add(new MySqlParameter("@mobilenumber", MobileNumber));
                 lSQLCmd.Parameters.Add(new MySqlParameter("@hitnotify", hitnotify));
                 lSQLCmd.Parameters.Add(new MySqlParameter("@PK_HookId", PK_HookId));
+                lSQLCmd.Parameters.Add(new MySqlParameter("@HeaderValues", HeaderValues));
+                lSQLCmd.Parameters.Add(new MySqlParameter("@IPHeaderType", ipheadertype));
                 lSQLCmd.Connection = lSQLConn;
                 lSQLCmd.ExecuteNonQuery();
             }

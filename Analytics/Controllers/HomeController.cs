@@ -235,7 +235,8 @@ namespace Analytics.Controllers
         //public ActionResult LoginRid(string latitude, string longitude, string rid_param)
         //public void LoginRid(string latitude, string longitude)
        // [PreventSpam(DelayRequest=1)]
-    public void LoginRid ()   
+        //public ActionResult LoginRid()
+        public void LoginRid ()   
     {
             try
             {
@@ -253,7 +254,7 @@ namespace Analytics.Controllers
                 //string path = Server.MapPath("../RedirectPage.html");
                 string path = Server.MapPath("~/RedirectPage.aspx" );
 
-                ErrorLogs.LogErrorData(" Starting point ... before monitize", DateTime.UtcNow.ToString());
+                //ErrorLogs.LogErrorData(" Starting point ... before monitize", DateTime.UtcNow.ToString());
 
                 //call monitize service here
                 new OperationsBO().Monitize(rid_param,"","",path);
@@ -263,7 +264,7 @@ namespace Analytics.Controllers
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                ErrorLogs.LogErrorData(ex.StackTrace+" " +ex.InnerException, ex.Message);
                 //return View();
                 //return new HttpStatusCodeResult(400, ex.Message).ToString();
             }

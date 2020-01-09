@@ -253,16 +253,36 @@ namespace Analytics.Helpers.BO
                 return ip;
             }
         }
-        public string IpAddress()
+        public ip_info IpAddress()
         {
-            string strIpAddress;
+            string strIpAddress; ip_info ipinfo_obj = new ip_info();
             strIpAddress = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-            ErrorLogs.LogErrorData("HTTP_X_FORWARDED_FOR", HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"]);
+            //ErrorLogs.LogErrorData("HTTP_X_FORWARDED_FOR", HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"]);
             if (strIpAddress == null)
             {
-                strIpAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+
+                strIpAddress = HttpContext.Current.Request.ServerVariables["HTTP_X_REAL_IP"];
+                if (strIpAddress == null)
+                {
+                    strIpAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+                    ipinfo_obj.ipaddress = strIpAddress;
+                    ipinfo_obj.ipheadertype = "REMOTE_ADDR";
+                }
+                else
+                {
+                    ipinfo_obj.ipaddress = strIpAddress;
+                    ipinfo_obj.ipheadertype = "HTTP_X_REAL_IP";
+                }
             }
-            return strIpAddress;
+            else
+            {
+
+              strIpAddress=strIpAddress.Split(',')[0];
+              ipinfo_obj.ipaddress = strIpAddress;
+              ipinfo_obj.ipheadertype = "HTTP_X_FORWARDED_FOR";
+                
+            }
+            return ipinfo_obj;
         }
         public void Monitize(string Shorturl, string latitude, string longitude, string path)
         //public UserInfo Monitize(string Shorturl, string latitude, string longitude)
@@ -276,17 +296,15 @@ namespace Analytics.Helpers.BO
                 List<uiddataobj> uid_ob_list = new List<uiddataobj>();
                 uiddataobj uid_obj = new uiddataobj();
                 int? FK_clientid = 0; bool hitnotify; int? pk_HookId = 0; campaignhookurl campobj = new campaignhookurl();
-
+                ip_info ipinfo_obj = new ip_info();
+                string ipheadertype;
                 try
                 {
 
                     string longurl = "";
-
-                    //long decodedvalue = new ConvertionBO().BaseToLong(Shorturl);
-                    //int Uniqueid_shorturldata = Convert.ToInt32(decodedvalue);
                     string Cookievalue = "";
 
-                    UserInfo obj_userinfo = new UserInfo();
+                    //UserInfo obj_userinfo = new UserInfo();
                     if (HttpContext.Current.Request.Cookies["VisitorCookie"] == null)
                     {
                         Random randNum = new Random();
@@ -307,8 +325,6 @@ namespace Analytics.Helpers.BO
 
 
                         uid_ob_list = (from u in dc.uiddatas
-                                       //.AsNoTracking()
-                                       //.AsEnumerable()
                                        where u.UniqueNumber == Shorturl
                                        select new uiddataobj()
                                        {
@@ -330,8 +346,7 @@ namespace Analytics.Helpers.BO
                         string uiderrtrack = "issue in uiddata query fetching ===shorturl= " + Shorturl + " ";
                         ErrorLogs.LogErrorData(uiderrtrack + ex.StackTrace + ex.InnerException, ex.Message);
                     }
-                    //if (!crawldetect(request))
-                    //{
+                    
                         if (uid_obj != null)
                         {
                             longurl = uid_obj.LongurlorMessage;
@@ -356,9 +371,7 @@ namespace Analytics.Helpers.BO
                                     // writer.Write("<body>");
                                     // writer.Write(longurl);
                                     // writer.Write("</body>");
-
                                     // string s = stringWriter.GetStringBuilder().ToString();
-
                                     // System.IO.File.WriteAllText(path,s);
                                     HttpContext.Current.Response.Redirect(@"../RedirectPage.aspx?surl=" + Shorturl);
                                     // HttpContext.Current.Response.Redirect("../RedirectPage.html");
@@ -397,8 +410,11 @@ namespace Analytics.Helpers.BO
                                 }
                             }
                             //for getting header value --end
-                            ipv4 = IpAddress();
-                            ErrorLogs.LogErrorData("useragent of " + ipv4 + " " + request.Browser.Browser, st);
+                            ipinfo_obj = IpAddress();
+                            ipv4 = ipinfo_obj.ipaddress;
+                            ipheadertype = ipinfo_obj.ipheadertype;
+                            //ipv4 = IpAddress();
+                            //ErrorLogs.LogErrorData("genuine,header values of " + ipv4 + " " + request.Browser.Browser, st);
                             ipv6 = (request.UserHostAddress != null) ? request.UserHostAddress : null;
                             //browser = (request.Browser.Browser!=null)?request.Browser.Browser:null;
                             //browserversion = (request.Browser.Version!=null)?request.Browser.Version:null;
@@ -464,9 +480,19 @@ namespace Analytics.Helpers.BO
                             }
                             //ErrorLogs.LogErrorData("before insert "+req_url + " " + "FK_UID = " + Fk_UID, DateTime.UtcNow.ToString());
                             //new DataInsertionBO().Insertshorturldata(ipv4, ipv6, browser, browserversion, City, Region, Country, CountryCode, req_url, useragent, hostname, devicetype, ismobiledevice, Fk_UID, FK_RID, FK_clientid);
-                            new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum, browser, browserversion, req_url, useragent, hostname, latitude, longitude, ismobiledevice, Fk_UID, FK_RID, FK_clientid, Cookievalue, uid_obj.MobileNumber, hitnotify, pk_HookId);
+                            new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum, browser, browserversion, req_url, useragent, hostname, latitude, longitude, ismobiledevice, Fk_UID, FK_RID, FK_clientid, Cookievalue, uid_obj.MobileNumber, hitnotify, pk_HookId,st,ipinfo_obj.ipheadertype);
                             //ErrorLogs.LogErrorData("after insert "+req_url + " " + "FK_UID = " + Fk_UID, DateTime.UtcNow.ToString());
 
+                            if (req_url.Contains("vyu.im"))
+                            {
+                                //google analytics code - start
+                                Spyriadis.net.GoogleTracker ga = new Spyriadis.net.GoogleTracker("UA-155335543-1");
+                                string campaignname = dc.riddatas.Where(x => x.PK_Rid == FK_RID).Select(y => y.CampaignName).SingleOrDefault();
+                                ga.trackEvent("VYUClicks", "Click", "Req_url", req_url);
+                                ga.trackPage("http://vyu.im", req_url, campaignname);
+                                ga.campaignWiseTrackData(FK_RID.ToString(), campaignname, req_url);
+                                //google analytics code - end
+                            }
                             if (campobj != null)
                             {
                                 if (campobj.Status == "Pause")
@@ -495,7 +521,10 @@ namespace Analytics.Helpers.BO
                     {
                         try
                         {
-                            ipv4 = IpAddress();
+                            ipinfo_obj = IpAddress();
+                            ipv4 = ipinfo_obj.ipaddress;
+                            ipheadertype = ipinfo_obj.ipheadertype;
+                            //ipv4 = IpAddress();
                             try { browser = request.Browser.Browser; }
                             catch (Exception ex) { browser = null; }
                             try { browserversion = request.Browser.Version; }
@@ -529,6 +558,8 @@ namespace Analytics.Helpers.BO
                                     st = st + " : " + (arr2[loop2]) + "  ;";
                                 }
                             }
+                            //ErrorLogs.LogErrorData("duplicate,header values of " + ipv4 + " " + request.Browser.Browser, st);
+
                             excluded_shorturl ex_obj = new excluded_shorturl();
                             ex_obj.Ipv4 = ipv4;
                             ex_obj.Browser = browser;
@@ -536,7 +567,7 @@ namespace Analytics.Helpers.BO
                             ex_obj.Req_url = req_url;
                             ex_obj.UserAgent = request.UserAgent;
                             ex_obj.IsMobileDevice =ismobiledevice ;
-                            ex_obj.HeaderValues = st;
+                            ex_obj.HeaderValues = st.ToString();
                             ex_obj.FK_Uid = uid_obj.PK_Uid;
                             ex_obj.FK_RID = uid_obj.FK_RID;
                             ex_obj.FK_ClientID = uid_obj.FK_ClientID;
@@ -568,7 +599,7 @@ namespace Analytics.Helpers.BO
                     if (ipv4 != null)
                     {
 
-                        new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum, "", "", req_url, "", "", latitude, longitude, "", Fk_UID, FK_RID, FK_clientid, "", "", false, 0);
+                        new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum, "", "", req_url, "", "", latitude, longitude, "", Fk_UID, FK_RID, FK_clientid, "", "", false, 0,"",ipinfo_obj.ipheadertype);
                     }
                     //return null;
                 }
@@ -609,8 +640,9 @@ namespace Analytics.Helpers.BO
             //ErrorLogs.LogErrorData("iscrawler1", iscrawler1.ToString());
             string useragent = request.UserAgent;
             List<string> Crawlers3 = new List<string>()
+           // "snippet",
 {
-   "snippet", "bot","crawler","spider","80legs","baidu","yahoo! slurp","ia_archiver","mediapartners-google",
+   "snippet","bot","crawler","spider","80legs","baidu","yahoo! slurp","ia_archiver","mediapartners-google",
     "lwp-trivial","nederland.zoek","ahoy","anthill","appie","arale","araneo","ariadne",            
     "atn_worldwide","atomz","bjaaland","ukonline","calif","combine","cosmos","cusco",
     "cyberspyder","digger","grabber","downloadexpress","ecollector","ebiness","esculapio",
@@ -632,9 +664,10 @@ namespace Analytics.Helpers.BO
 };
             string ua = useragent.ToLower();
             bool iscrawler2 = Crawlers3.Exists(x => ua.Contains(x));
-            ErrorLogs.LogErrorData("iscrawler2", iscrawler2.ToString());
             if (iscrawler2 == false)
               iscrawler2= filter_crawl_ips(request);
+
+            //ErrorLogs.LogErrorData("iscrawler2", iscrawler2.ToString());
             return iscrawler2;
 
 //            // crawlers that have 'bot' in their useragent

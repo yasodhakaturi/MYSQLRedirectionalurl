@@ -70,7 +70,7 @@ namespace Analytics
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertRIDData", campaignNameParameter, referencenumberParameter, pwdParameter, clientidParameter);
         }
     
-        public virtual int InsertSHORTURLData(string ipv4, string ipv6, string browser, string browser_version, string latitude, string longitude, Nullable<long> ipnum, string req_url, string useragent, string hostname, string isMobiledevice, Nullable<int> fk_uid, Nullable<int> fk_rid, Nullable<int> fK_clientid, string cookievalue, string mobilenumber, Nullable<sbyte> hitnotify, Nullable<int> pK_HookId)
+        public virtual int InsertSHORTURLData(string ipv4, string ipv6, string browser, string browser_version, string latitude, string longitude, Nullable<long> ipnum, string req_url, string useragent, string hostname, string isMobiledevice, Nullable<int> fk_uid, Nullable<int> fk_rid, Nullable<int> fK_clientid, string cookievalue, string mobilenumber, Nullable<sbyte> hitnotify, Nullable<int> pK_HookId, string headerValues)
         {
             var ipv4Parameter = ipv4 != null ?
                 new ObjectParameter("ipv4", ipv4) :
@@ -144,7 +144,11 @@ namespace Analytics
                 new ObjectParameter("PK_HookId", pK_HookId) :
                 new ObjectParameter("PK_HookId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertSHORTURLData", ipv4Parameter, ipv6Parameter, browserParameter, browser_versionParameter, latitudeParameter, longitudeParameter, ipnumParameter, req_urlParameter, useragentParameter, hostnameParameter, isMobiledeviceParameter, fk_uidParameter, fk_ridParameter, fK_clientidParameter, cookievalueParameter, mobilenumberParameter, hitnotifyParameter, pK_HookIdParameter);
+            var headerValuesParameter = headerValues != null ?
+                new ObjectParameter("HeaderValues", headerValues) :
+                new ObjectParameter("HeaderValues", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertSHORTURLData", ipv4Parameter, ipv6Parameter, browserParameter, browser_versionParameter, latitudeParameter, longitudeParameter, ipnumParameter, req_urlParameter, useragentParameter, hostnameParameter, isMobiledeviceParameter, fk_uidParameter, fk_ridParameter, fK_clientidParameter, cookievalueParameter, mobilenumberParameter, hitnotifyParameter, pK_HookIdParameter, headerValuesParameter);
         }
     
         public virtual int InsertUIDData(Nullable<int> fk_rid, Nullable<int> fk_clientid, string referencenumber, string longurl, string mobilenumber)

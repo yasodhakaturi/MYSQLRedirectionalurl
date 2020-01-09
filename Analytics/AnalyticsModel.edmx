@@ -253,6 +253,7 @@
           <Property Name="ACK" Type="varchar" MaxLength="45" />
           <Property Name="ACKDATE" Type="datetime" Precision="6" />
           <Property Name="Request_Header" Type="varchar" MaxLength="600" />
+          <Property Name="IPHeaderType" Type="varchar" MaxLength="60" />
         </EntityType>
         <EntityType Name="stat_counts">
           <Key>
@@ -454,6 +455,7 @@
           <Parameter Name="mobilenumber" Type="varchar" Mode="In" />
           <Parameter Name="hitnotify" Type="tinyint" Mode="In" />
           <Parameter Name="PK_HookId" Type="int" Mode="In" />
+          <Parameter Name="HeaderValues" Type="varchar" Mode="In" />
         </Function>
         <Function Name="InsertUIDData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
           <Parameter Name="fk_rid" Type="int" Mode="In" />
@@ -782,6 +784,7 @@
             <Parameter Name="mobilenumber" Mode="In" Type="String" />
             <Parameter Name="hitnotify" Mode="In" Type="SByte" />
             <Parameter Name="PK_HookId" Mode="In" Type="Int32" />
+            <Parameter Name="HeaderValues" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="InsertUIDData">
             <Parameter Name="fk_rid" Mode="In" Type="Int32" />
@@ -1015,6 +1018,7 @@
           <Property Name="ACK" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="ACKDATE" Type="DateTime" />
           <Property Name="Request_Header" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="IPHeaderType" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="client" Relationship="shortenurlModel.FK_SHORTURLDATA_Client" FromRole="shorturldata" ToRole="client" />
           <NavigationProperty Name="riddata" Relationship="shortenurlModel.FK_SHORTURLDATA_RIDDATA" FromRole="shorturldata" ToRole="riddata" />
           <NavigationProperty Name="uiddata" Relationship="shortenurlModel.FK_SHORTURLDATA_UIDDATA" FromRole="shorturldata" ToRole="uiddata" />
@@ -1391,6 +1395,7 @@
           <EntitySetMapping Name="shorturldatas">
             <EntityTypeMapping TypeName="shortenurlModel.shorturldata">
               <MappingFragment StoreEntitySet="shorturldata">
+                <ScalarProperty Name="IPHeaderType" ColumnName="IPHeaderType" />
                 <ScalarProperty Name="Request_Header" ColumnName="Request_Header" />
                 <ScalarProperty Name="ACKDATE" ColumnName="ACKDATE" />
                 <ScalarProperty Name="ACK" ColumnName="ACK" />

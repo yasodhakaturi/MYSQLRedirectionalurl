@@ -11,4 +11,10 @@ namespace Analytics.Models
         public long? ipnum { get; set; }
         public string ipaddress { get; set; }
     }
+    public class ip_info
+    {
+        public string ipaddress { get; set; }
+        public string ipheadertype { get; set; }
+
+    }
 }
