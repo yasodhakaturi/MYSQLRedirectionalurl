@@ -46,6 +46,7 @@ namespace Analytics
         public string ACK { get; set; }
         public Nullable<System.DateTime> ACKDATE { get; set; }
         public string Request_Header { get; set; }
+        public string IPHeaderType { get; set; }
     
         public virtual client client { get; set; }
         public virtual riddata riddata { get; set; }

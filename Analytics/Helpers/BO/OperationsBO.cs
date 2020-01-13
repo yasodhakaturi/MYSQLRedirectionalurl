@@ -413,6 +413,9 @@ namespace Analytics.Helpers.BO
                             ipinfo_obj = IpAddress();
                             ipv4 = ipinfo_obj.ipaddress;
                             ipheadertype = ipinfo_obj.ipheadertype;
+                            //System.Web.Configuration.HttpCapabilitiesBase objcap=request.Browser;
+                            //string mobiledevicemanufacturer = objcap.MobileDeviceManufacturer;
+                            //string mm = objcap.MobileDeviceModel;
                             //ipv4 = IpAddress();
                             //ErrorLogs.LogErrorData("genuine,header values of " + ipv4 + " " + request.Browser.Browser, st);
                             ipv6 = (request.UserHostAddress != null) ? request.UserHostAddress : null;
@@ -541,23 +544,23 @@ namespace Analytics.Helpers.BO
                             System.Collections.Specialized.NameValueCollection coll;
 
                             // Load Header collection into NameValueCollection object.
-                            coll = request.Headers;
-                            string st = "";
-                            // Put the names of all keys into a string array.
-                            String[] arr1 = coll.AllKeys;
-                            for (loop1 = 0; loop1 < arr1.Length; loop1++)
-                            {
-                                //ErrorLogs.LogErrorData("header keys : ", "Key: " + arr1[loop1] + "<br>");
-                                st = st + arr1[loop1].ToString();
+                            //coll = request.Headers;
+                            //string st = "";
+                            //// Put the names of all keys into a string array.
+                            //String[] arr1 = coll.AllKeys;
+                            //for (loop1 = 0; loop1 < arr1.Length; loop1++)
+                            //{
+                            //    //ErrorLogs.LogErrorData("header keys : ", "Key: " + arr1[loop1] + "<br>");
+                            //    st = st + arr1[loop1].ToString();
 
-                                // Get all values under this key.
-                                String[] arr2 = coll.GetValues(arr1[loop1]);
-                                for (loop2 = 0; loop2 < arr2.Length; loop2++)
-                                {
-                                    //ErrorLogs.LogErrorData( "","Value " + loop2 + ": " + (arr2[loop2]) + "<br>");
-                                    st = st + " : " + (arr2[loop2]) + "  ;";
-                                }
-                            }
+                            //    // Get all values under this key.
+                            //    String[] arr2 = coll.GetValues(arr1[loop1]);
+                            //    for (loop2 = 0; loop2 < arr2.Length; loop2++)
+                            //    {
+                            //        //ErrorLogs.LogErrorData( "","Value " + loop2 + ": " + (arr2[loop2]) + "<br>");
+                            //        st = st + " : " + (arr2[loop2]) + "  ;";
+                            //    }
+                            //}
                             //ErrorLogs.LogErrorData("duplicate,header values of " + ipv4 + " " + request.Browser.Browser, st);
 
                             excluded_shorturl ex_obj = new excluded_shorturl();
@@ -567,7 +570,7 @@ namespace Analytics.Helpers.BO
                             ex_obj.Req_url = req_url;
                             ex_obj.UserAgent = request.UserAgent;
                             ex_obj.IsMobileDevice =ismobiledevice ;
-                            ex_obj.HeaderValues = st.ToString();
+                            ex_obj.HeaderValues = ipheadertype;
                             ex_obj.FK_Uid = uid_obj.PK_Uid;
                             ex_obj.FK_RID = uid_obj.FK_RID;
                             ex_obj.FK_ClientID = uid_obj.FK_ClientID;
@@ -642,7 +645,7 @@ namespace Analytics.Helpers.BO
             List<string> Crawlers3 = new List<string>()
            // "snippet",
 {
-   "snippet","bot","crawler","spider","80legs","baidu","yahoo! slurp","ia_archiver","mediapartners-google",
+   "snippet","snapchat","bingbot","virustotalcloud","externalhit","bot","crawler","spider","80legs","baidu","yahoo! slurp","ia_archiver","mediapartners-google",
     "lwp-trivial","nederland.zoek","ahoy","anthill","appie","arale","araneo","ariadne",            
     "atn_worldwide","atomz","bjaaland","ukonline","calif","combine","cosmos","cusco",
     "cyberspyder","digger","grabber","downloadexpress","ecollector","ebiness","esculapio",
