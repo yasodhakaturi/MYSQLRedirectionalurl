@@ -485,17 +485,17 @@ namespace Analytics.Helpers.BO
                             //new DataInsertionBO().Insertshorturldata(ipv4, ipv6, browser, browserversion, City, Region, Country, CountryCode, req_url, useragent, hostname, devicetype, ismobiledevice, Fk_UID, FK_RID, FK_clientid);
                             new DataInsertionBO().Insertshorturldata(ipv4, ipv6, ipnum, browser, browserversion, req_url, useragent, hostname, latitude, longitude, ismobiledevice, Fk_UID, FK_RID, FK_clientid, Cookievalue, uid_obj.MobileNumber, hitnotify, pk_HookId,st,ipinfo_obj.ipheadertype);
                             //ErrorLogs.LogErrorData("after insert "+req_url + " " + "FK_UID = " + Fk_UID, DateTime.UtcNow.ToString());
-
+                            
+                                //google analytics code - start
                             if (req_url.Contains("vyu.im"))
                             {
-                                //google analytics code - start
                                 Spyriadis.net.GoogleTracker ga = new Spyriadis.net.GoogleTracker("UA-155335543-1");
                                 string campaignname = dc.riddatas.Where(x => x.PK_Rid == FK_RID).Select(y => y.CampaignName).SingleOrDefault();
                                 ga.trackEvent("VYUClicks", "Click", "Req_url", req_url);
                                 ga.trackPage("http://vyu.im", req_url, campaignname);
                                 ga.campaignWiseTrackData(FK_RID.ToString(), campaignname, req_url);
-                                //google analytics code - end
-                            }
+                             }
+                            //google analytics code - end
                             if (campobj != null)
                             {
                                 if (campobj.Status == "Pause")
